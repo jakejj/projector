@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get 'new/:path', to: 'new#index', constraints: {path: /.*/}, as: 'new'
+
   resources :projects do
     resources :tasks
   end
