@@ -9,7 +9,8 @@ class Project extends React.Component {
 
 
   getProject(){
-    return this.props.projectStore.get({id: this.props.appUIStore.routeParams.projectId, props: 
+    //return this.props.projectStore.get({id: this.props.appUIStore.routeParams.projectId, props: 
+    return this.props.projectStore.get({id: this.props.params.projectId, props: 
       [
         'id',
         'name'

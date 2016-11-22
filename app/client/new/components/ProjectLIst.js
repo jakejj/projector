@@ -10,6 +10,8 @@ class ProjectList extends React.Component {
 
 
   render(){
+    this.props.projectStore.fetch({})
+    
     if(!this.props.projectStore.listLoaded){ return(<Loading />) }
     return (
       <Grid id="projects" fluid={true}>

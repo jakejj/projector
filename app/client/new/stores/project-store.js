@@ -1,7 +1,7 @@
 import mobx, { action, computed, observable, extendObservable } from 'mobx'
 import _ from 'lodash'
 import { reduce } from 'lodash/fp'
-import { camelizeObject, decamelizeObject } from '../../utils/utils';
+import { camelizeObject, decamelizeObject, isPromise } from '../../utils/utils';
 
 import ProjectModel from './project-model'
 
@@ -21,10 +21,12 @@ function makeUrlQueryString(query){
 export default class ProjectStore {
   @observable projects = mobx.map({})
   @observable listLoaded = false
+  //@observable loadedRequests = []
 
   constructor(app, { api } = {}){
     this.app = app
     this.api = api
+    this.loadedRequests = []
   }
 
 
@@ -37,33 +39,7 @@ export default class ProjectStore {
   }
 
 
-  loadOne(options){
-    let url = '/api/projects/'+options.id+'.json'
 
-    if(options.query){ url = url + makeUrlQueryString(options.query) }
-
-    return this.api.get(url).then(action('importProject', (response)=>{
-      let model = new ProjectModel(this.app, response.data)
-      this.add(model)
-    }))
-  }
-
-
-  loadMany(options){
-    let url = '/api/projects.json'
-    let app = this.app
-
-    if(options.query){ url = url + makeUrlQueryString(options.query) }
-
-    return this.api.get(url).then(action('importProjects', (response)=>{
-      response.data.forEach((modelData)=>{
-        let model = new ProjectModel(app, modelData)
-        this.add(model)
-      })
-
-      this.listLoaded = true
-    }))
-  }
 
   update(model, values){
     let url = '/api/projects/'+model.id+'.json'
@@ -106,6 +82,54 @@ export default class ProjectStore {
   }
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  loadOne(options){
+    let url = '/api/projects/'+options.id+'.json'
+
+    if(options.query){ url = url + makeUrlQueryString(options.query) }
+
+    return this.api.get(url).then(action('importProject', (response)=>{
+      let model = new ProjectModel(this.app, response.data)
+      this.add(model)
+    }))
+  }
+
+
+  loadMany(options){
+    let url = '/api/projects.json'
+    let app = this.app
+
+    if(options.query){ url = url + makeUrlQueryString(options.query) }
+
+    return this.api.get(url).then(action('importProjects', (response)=>{
+      response.data.forEach((modelData)=>{
+        let model = new ProjectModel(app, modelData)
+        this.add(model)
+      })
+
+      this.listLoaded = true
+      this.loadedRequest(options)
+    }))
+  }
+
+
+
+
   isLoaded({id, model, year, props = []} = {}){
     if(!id && !model){ throw('isLoaded must be called with an id or a model.') }
 
@@ -121,7 +145,18 @@ export default class ProjectStore {
   }
 
 
+
+
+
   get(options){
+    if(options.id){
+      return this.getOne(options)
+    } else {
+      return this.getMany(options)
+    }
+  }
+
+  getOne(options){
     options.model = this.projects.get(options.id)
     if(!options.model){ return false }
     options.id = undefined
@@ -130,6 +165,53 @@ export default class ProjectStore {
       return options.model
     }
     return false
+  }
+  
+  //TODO finish this so it actually returns the result of the request
+  getMany(options){
+    if(this.hasLoadedRequest(options)){
+      return this.projects.values()
+    }
+  }
+
+
+
+  hasLoadedRequest(options){
+    return this.loadedRequests.some((query)=>{ return _.isEqual(query, options) })
+  }
+  
+  loadedRequest(options){
+    if(!this.hasLoadedRequest(options)){
+      this.loadedRequests.push(options)
+    }
+  }
+
+
+  // Options:
+  //
+  // returnPromise - returns a promise if an the request hasn't been fulfilled yet
+  // alwaysReturnPromise - Not implemented yet - always returns a promise that will either 
+  //    resolive immediately or 
+  //    when the request is fulfilled if it hasn't been fulfilled yet.
+  fetch(options){
+    let found
+    //found = this.get(options)
+    if(options.id){
+      found = this.getOne(options)
+    } else {
+      found = this.getMany(options)
+    }
+    
+    
+    if(!found){
+      found = this.load(options)
+    }
+    
+    //if(options isPromise(found)){
+    //  
+    //}
+    
+    return found
   }
 
 }

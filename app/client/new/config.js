@@ -1,3 +1,5 @@
+import React from 'react'
+import ReactDOM from 'react-dom'
 import Axios from 'axios'
 import mobx from 'mobx'
 import mobxstore from 'mobx-store'
@@ -6,6 +8,8 @@ import mobxstore from 'mobx-store'
 //import MessageUIStore from './stores/MessageUIStore'
 //import Vessel from './stores/vessel'
 //import VesselStore from './stores/VesselStore'
+
+import App from './components/app'
 
 import AppUIStore from './stores/app-ui-store'
 import MessageUIStore from './stores/message-ui-store'
@@ -44,3 +48,6 @@ function getCSRFToken(){
     }
   }
 }
+
+
+ReactDOM.render(<App/>, document.getElementById('appcontainer'))
