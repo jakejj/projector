@@ -10,8 +10,7 @@ class Projects extends React.Component {
   render(){
     let { pathname, projectId } = this.props
     let mobile = false
-    
-console.log(projectId)
+
     return(
       <LayoutSwitcher mobile={mobile}>
         <ProjectList />

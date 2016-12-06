@@ -8,9 +8,13 @@ import Loading from './Loading'
 @inject('projectStore') @observer
 class ProjectList extends React.Component {
 
+  constructor(props) {
+    super(props)
+    props.projectStore.fetch({})
+  }
 
   render(){
-    this.props.projectStore.fetch({})
+    
     
     if(!this.props.projectStore.listLoaded){ return(<Loading />) }
     return (
@@ -32,6 +36,7 @@ class ProjectList extends React.Component {
         )}
         <Row>
           <Col md={12}>
+            <Link to={"/new/projects/"}>None</Link>
           </Col>
         </Row>
       </Grid>

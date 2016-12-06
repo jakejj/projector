@@ -3,6 +3,7 @@ import { Grid, Row, Col } from 'react-bootstrap'
 //import { withRouter } from 'react-router'
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 import { Provider } from 'mobx-react'
+import DevTools from 'mobx-react-devtools';
 
 import app from '../config'
 import Messages from './Messages'
@@ -15,14 +16,15 @@ class App extends React.Component {
 
       <BrowserRouter>
         <Provider {...app} >
-          <div id="crabrat-app">
-            <div id="crabrat-app-header">
+          <div id="projector-app">
+            <DevTools hightlightTimeout={60000} position={{ bottom: 0, right: 0 }} />
+            <div id="projector-app-header">
               {
                 <Messages />
               }
               
             </div>
-            <div id="crabrat-app-content">
+            <div id="projector-app-content">
               { this.props.children }
               <Match pattern="/new/projects" component={Projects} />
             </div>

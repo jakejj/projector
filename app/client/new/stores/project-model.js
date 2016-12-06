@@ -5,6 +5,9 @@ import { camelizeObject, decamelizeObject } from '../../utils/utils';
 
 export default class ProjectModel {
   @observable name
+  @observable createdAt
+  @observable updatedAt
+  @observable completedAt
 
   constructor(app, values={}){
     this.app = app

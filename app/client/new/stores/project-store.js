@@ -21,7 +21,7 @@ function makeUrlQueryString(query){
 export default class ProjectStore {
   @observable projects = mobx.map({})
   @observable listLoaded = false
-  //@observable loadedRequests = []
+
 
   constructor(app, { api } = {}){
     this.app = app
@@ -61,7 +61,19 @@ export default class ProjectStore {
 
 
   @action('addProject') add(model){
-    this.projects.set(model.id, model)
+//    let existingModel = this.projects.get(model.id)
+//console.log('existing', existingModel)
+//console.log('new', model)
+//    if(existingModel){
+//      //_.merge(existingModel, model)
+//console.log('updating')
+//console.log(existingModel.createdAt)
+//      existingModel.createdAt = model.createdAt
+//console.log(existingModel.createdAt)
+//    } else {
+//console.log('adding')
+      this.projects.set(model.id, model)
+//    }
   }
 
 
@@ -96,14 +108,20 @@ export default class ProjectStore {
 
 
 
+  load(options){
+    if(options.id){
+      return this.loadOne(options)
+    } else {
+      return this.loadMany(options)
+    }
+  }
 
 
   loadOne(options){
     let url = '/api/projects/'+options.id+'.json'
-
     if(options.query){ url = url + makeUrlQueryString(options.query) }
 
-    return this.api.get(url).then(action('importProject', (response)=>{
+    this.api.get(url).then(action('importProject', (response)=>{
       let model = new ProjectModel(this.app, response.data)
       this.add(model)
     }))
@@ -113,7 +131,6 @@ export default class ProjectStore {
   loadMany(options){
     let url = '/api/projects.json'
     let app = this.app
-
     if(options.query){ url = url + makeUrlQueryString(options.query) }
 
     return this.api.get(url).then(action('importProjects', (response)=>{
@@ -128,24 +145,14 @@ export default class ProjectStore {
   }
 
 
-
-
-  isLoaded({id, model, year, props = []} = {}){
-    if(!id && !model){ throw('isLoaded must be called with an id or a model.') }
-
-    if(id){ model = this.getVessel(id, year) }
-    if(model === undefined){ return false }
-
+  hasAllProperties({model, props = []} = {}){
+    if(!model){ throw('hasAllProperties must be called with a model.') }
     if(props.length > 0){
-      let hasAllProps = !props.some((property)=>{ return( model[property] === undefined ) })
-      return hasAllProps
+      // Returns false if at least one required property doesn't exist
+      return !props.some((property)=>{ return( model[property] === undefined ) })
     }
-    
     return true
   }
-
-
-
 
 
   get(options){
@@ -156,17 +163,17 @@ export default class ProjectStore {
     }
   }
 
+
   getOne(options){
     options.model = this.projects.get(options.id)
     if(!options.model){ return false }
-    options.id = undefined
-
-    if(this.isLoaded(options)){
+    if(this.hasAllProperties(options)){
       return options.model
     }
     return false
   }
-  
+
+
   //TODO finish this so it actually returns the result of the request
   getMany(options){
     if(this.hasLoadedRequest(options)){
@@ -175,11 +182,11 @@ export default class ProjectStore {
   }
 
 
-
   hasLoadedRequest(options){
     return this.loadedRequests.some((query)=>{ return _.isEqual(query, options) })
   }
-  
+
+
   loadedRequest(options){
     if(!this.hasLoadedRequest(options)){
       this.loadedRequests.push(options)
@@ -195,18 +202,9 @@ export default class ProjectStore {
   //    when the request is fulfilled if it hasn't been fulfilled yet.
   fetch(options){
     let found
-    //found = this.get(options)
-    if(options.id){
-      found = this.getOne(options)
-    } else {
-      found = this.getMany(options)
-    }
-    
-    
-    if(!found){
-      found = this.load(options)
-    }
-    
+    found = this.get(options)
+    if(!found){ found = this.load(options) }
+
     //if(options isPromise(found)){
     //  
     //}
