@@ -34,7 +34,29 @@ class ProjectWrapper extends React.Component {
         'created_at'
       ]
     })
+    
+//    {
+//      {
+//        type: 'Project'
+//        params: { id: '1' }
+//        fields: ['id, name, createdAt, completed_tasks']
+//      }
+//      {
+//        type: 'Task'
+//        values: ['id', 'name']
+//        query: {
+//          projectId: '1'
+//          completedAt: !null
+//        }
+//      }
+//    }
+    
   }
+
+  project
+  project.tasks
+  preject.completed_tasks
+
 
 
   render(){
