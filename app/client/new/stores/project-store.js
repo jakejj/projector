@@ -109,11 +109,15 @@ export default class ProjectStore {
 
 
   load(options){
-    if(options.id){
-      return this.loadOne(options)
-    } else {
-      return this.loadMany(options)
-    }
+    app.backend.loadFromGql(app, app.backend.getQuery())
+    
+    
+    
+    //if(options.id){
+    //  return this.loadOne(options)
+    //} else {
+    //  return this.loadMany(options)
+    //}
   }
 
 
@@ -211,5 +215,16 @@ export default class ProjectStore {
     
     return found
   }
+
+
+
+
+
+
+
+
+
+
+
 
 }

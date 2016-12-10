@@ -43,19 +43,16 @@ class ProjectWrapper extends React.Component {
 //      }
 //      {
 //        type: 'Task'
-//        values: ['id', 'name']
-//        query: {
+//        params: {
 //          projectId: '1'
-//          completedAt: !null
 //        }
+//        fields: ['id', 'name']
 //      }
 //    }
     
   }
 
-  project
-  project.tasks
-  preject.completed_tasks
+
 
 
 
