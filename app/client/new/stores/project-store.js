@@ -1,7 +1,7 @@
 import mobx, { action, computed, observable, extendObservable } from 'mobx'
 import _ from 'lodash'
 import { reduce } from 'lodash/fp'
-import { camelizeObject, decamelizeObject } from '../../utils/utils';
+import { camelizeObject, decamelizeObject, isPromise, inGroupsOf, pluralize } from '../../utils/utils';
 
 import ProjectModel from './project-model'
 
@@ -22,9 +22,11 @@ export default class ProjectStore {
   @observable projects = mobx.map({})
   @observable listLoaded = false
 
+
   constructor(app, { api } = {}){
     this.app = app
     this.api = api
+    this.loadedRequests = []
   }
 
 
@@ -37,33 +39,7 @@ export default class ProjectStore {
   }
 
 
-  loadOne(options){
-    let url = '/api/projects/'+options.id+'.json'
 
-    if(options.query){ url = url + makeUrlQueryString(options.query) }
-
-    return this.api.get(url).then(action('importProject', (response)=>{
-      let model = new ProjectModel(this.app, response.data)
-      this.add(model)
-    }))
-  }
-
-
-  loadMany(options){
-    let url = '/api/projects.json'
-    let app = this.app
-
-    if(options.query){ url = url + makeUrlQueryString(options.query) }
-
-    return this.api.get(url).then(action('importProjects', (response)=>{
-      response.data.forEach((modelData)=>{
-        let model = new ProjectModel(app, modelData)
-        this.add(model)
-      })
-
-      this.listLoaded = true
-    }))
-  }
 
   update(model, values){
     let url = '/api/projects/'+model.id+'.json'
@@ -85,7 +61,12 @@ export default class ProjectStore {
 
 
   @action('addProject') add(model){
+    //let existingModel = this.projects.get(model.id)
+    //if(existingModel){
+    //  existingModel.createdAt = model.createdAt
+    //} else {
     this.projects.set(model.id, model)
+    //}
   }
 
 
@@ -106,30 +87,190 @@ export default class ProjectStore {
   }
 
 
-  isLoaded({id, model, year, props = []} = {}){
-    if(!id && !model){ throw('isLoaded must be called with an id or a model.') }
 
-    if(id){ model = this.getVessel(id, year) }
-    if(model === undefined){ return false }
 
-    if(props.length > 0){
-      let hasAllProps = !props.some((property)=>{ return( model[property] === undefined ) })
-      return hasAllProps
+
+
+
+
+  newhasAllProperties(model, fields){
+    return _.every(fields, (field)=>{ return model[field] !== undefined })
+  }
+
+  find(params, fields=[]){
+    let found = []
+    this.projects.forEach((value, key)=>{
+      let match = _.every(Object.keys(params), (paramKey)=>{
+        return value[paramKey] === params[paramKey]
+      })
+      if(match && this.newhasAllProperties(value, fields)){ found.push(value) }
+    })
+    return found
+  }
+
+
+  processGetRequest(request){
+    let modelName = request[0].toLowerCase()
+    let params = request[1]
+    let fields = request[2]
+
+    if(params.id){
+      let found = this[pluralize(modelName)].get(params.id)
+      return (found && this.newhasAllProperties(found, fields)) ? found : null
+    } else {
+      return this.find(params, fields)
+    }
+  }
+
+  // Options {bypassCache: true}
+  newget(...args){
+    if(args.length < 3){ throw('At least 3 arguments are required: model type, params, fields.') }
+    let options
+    if(args.length % 3 != 0){ options = args.pop() }
+    let requests = inGroupsOf(args, 3)
+
+    let cached = this.app.backend.checkQueryCache(requests)
+    if(!cached){ return null }
+
+    if(requests.length > 1){
+      responses = null
+      requests.forEach((request)=>{
+        response = this.processGetRequest(request)
+        
+        if(response){ 
+          if(responses === null){ responses = [] }
+          responses.push(response)
+        }
+        
+        return responses
+      })
+    } else {
+      return this.processGetRequest(requests[0])
     }
     
+  }
+
+  load(...args){
+    if(args.length < 3){ throw('At least 3 arguments are required: model type, params, fields.') }
+    let options
+    if(args.length % 3 != 0){ options = args.pop() }
+    let requests = inGroupsOf(args, 3)
+
+    app.backend.loadFromGql(app, requests)
+    
+    
+    
+    //if(options.id){
+    //  return this.loadOne(options)
+    //} else {
+    //  return this.loadMany(options)
+    //}
+  }
+
+
+  loadOne(options){
+    let url = '/api/projects/'+options.id+'.json'
+    if(options.query){ url = url + makeUrlQueryString(options.query) }
+
+    this.api.get(url).then(action('importProject', (response)=>{
+      let model = new ProjectModel(this.app, response.data)
+      this.add(model)
+    }))
+  }
+
+
+  loadMany(options){
+    let url = '/api/projects.json'
+    let app = this.app
+    if(options.query){ url = url + makeUrlQueryString(options.query) }
+
+    return this.api.get(url).then(action('importProjects', (response)=>{
+      response.data.forEach((modelData)=>{
+        let model = new ProjectModel(app, modelData)
+        this.add(model)
+      })
+
+      this.listLoaded = true
+      this.loadedRequest(options)
+    }))
+  }
+
+
+  hasAllProperties({model, props = []} = {}){
+    if(!model){ throw('hasAllProperties must be called with a model.') }
+    if(props.length > 0){
+      // Returns false if at least one required property doesn't exist
+      return !props.some((property)=>{ return( model[property] === undefined ) })
+    }
     return true
   }
 
 
   get(options){
+    if(options.id){
+      return this.getOne(options)
+    } else {
+      return this.getMany(options)
+    }
+  }
+
+
+  getOne(options){
     options.model = this.projects.get(options.id)
     if(!options.model){ return false }
-    options.id = undefined
-
-    if(this.isLoaded(options)){
+    if(this.hasAllProperties(options)){
       return options.model
     }
     return false
   }
+
+
+  //TODO finish this so it actually returns the result of the request
+  getMany(options){
+    if(this.hasLoadedRequest(options)){
+      return this.projects.values()
+    }
+  }
+
+
+  hasLoadedRequest(options){
+    return this.loadedRequests.some((query)=>{ return _.isEqual(query, options) })
+  }
+
+
+  loadedRequest(options){
+    if(!this.hasLoadedRequest(options)){
+      this.loadedRequests.push(options)
+    }
+  }
+
+
+  // Options:
+  //
+  // returnPromise - returns a promise if an the request hasn't been fulfilled yet
+  // alwaysReturnPromise - Not implemented yet - always returns a promise that will either 
+  //    resolive immediately or 
+  //    when the request is fulfilled if it hasn't been fulfilled yet.
+  fetch(request, options){
+    let found = false //this.get(options)
+    if(!found){ found = this.load(options) }
+
+    //if(options isPromise(found)){
+    //  
+    //}
+    
+    return found
+  }
+
+
+
+
+
+
+
+
+
+
+
 
 }

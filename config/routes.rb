@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   end
   
   namespace :api do
+    resources :gql, via: [:post, :options]
     resources :projects do
       resources :tasks
     end

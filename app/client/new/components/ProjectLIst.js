@@ -8,9 +8,15 @@ import Loading from './Loading'
 @inject('projectStore') @observer
 class ProjectList extends React.Component {
 
+  constructor(props) {
+    super(props)
+    let projects = this.props.projectStore.load('Projects', {}, ['id', 'name'])
+  }
 
   render(){
-    if(!this.props.projectStore.listLoaded){ return(<Loading />) }
+    let projects = this.props.projectStore.newget('Projects', {}, ['id', 'name'])
+
+    if(!projects){ return(<Loading />) }
     return (
       <Grid id="projects" fluid={true}>
         <Row>
@@ -30,6 +36,7 @@ class ProjectList extends React.Component {
         )}
         <Row>
           <Col md={12}>
+            <Link to={"/new/projects/"}>None</Link>
           </Col>
         </Row>
       </Grid>

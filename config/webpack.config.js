@@ -6,6 +6,7 @@ var APP_DIR = path.resolve(__dirname, '../app/client')
 
 
 var config = {
+  devtool: "#eval-source_map",
 
   entry: {
     'crabrat': APP_DIR + '/app.js',

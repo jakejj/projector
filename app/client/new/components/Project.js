@@ -4,28 +4,102 @@ import { observer, inject } from 'mobx-react'
 import Loading from './Loading'
 
 
-@inject('appUIStore', 'projectStore') @observer
-class Project extends React.Component {
+class Wrapper extends React.Component {
 
-
-  getProject(){
-    return this.props.projectStore.get({id: this.props.appUIStore.routeParams.projectId, props: 
-      [
-        'id',
-        'name'
-      ]
-    })
+  constructor(props) {
+    super(props)
+    this.props.fetchData(props)
   }
 
+  componentWillReceiveProps(nextProps){
+    if(this.props.params !== nextProps.params){
+      this.props.fetchData(nextProps)
+    }
+  }
+
+  render(){ return(this.props.children) }
+
+}
+
+
+@inject('appUIStore', 'projectStore') @observer
+class ProjectWrapper extends React.Component {
+
+
+  fetchData(){
+    return this.props.projectStore.load(
+      'Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'], 
+      {option: 'First Option'})
+
+    //fetch(
+    //  'Project', { id: '1' }, ['id, name, createdAt'],
+    //  'Tasks', { projectId: '1' }, ['id, name, createdAt'], 
+    //  options
+    //)
+
+    //return this.props.projectStore.fetch({
+    //  type: 'Project',
+    //  params: { id: '1' },
+    //  fields: ['id, name, createdAt']
+    //})
+
+    
+    //return this.props.projectStore.fetch({id: this.props.params.projectId, props: 
+    //  [
+    //    'id',
+    //    'name',
+    //    'created_at'
+    //  ]
+    //})
+    
+//    {
+//      {
+//        type: 'Project'
+//        params: { id: '1' }
+//        fields: ['id, name, createdAt, completed_tasks']
+//      }
+//      {
+//        type: 'Task'
+//        params: {
+//          projectId: '1'
+//        }
+//        fields: ['id', 'name']
+//      }
+//    }
+    
+  }
+
+
+
+
+
   render(){
-    let project = this.getProject()
+    //let project = this.props.projectStore.get({id: this.props.params.projectId})
+    
+    let project = this.props.projectStore.newget('Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'])
+    //let project = this.props.projectStore.newget('Project', {name: 'Crabrat'}, ['name', 'createdAt'])[0]
+
+    return( 
+      <Wrapper params={this.props.params} fetchData={this.fetchData.bind(this)}>
+        <Project project={project} projectStore={this.props.projectStore} params={this.props.params}></Project>
+      </Wrapper>
+    )
+  }
+
+}
+
+@observer
+class Project extends React.Component {
+
+  render(){
+    let project = this.props.project
 
     if(!project){ return(<Loading />) }
     return (
       <Grid id="project" fluid={true}>
         <Row>
           <Col md={12}>
-            <h1 className="page-title">{project.name}</h1>
+            <h1 className="page-title">{project.name} ({project.createdAt})</h1>
           </Col>
         </Row>
         <Row>
@@ -38,4 +112,31 @@ class Project extends React.Component {
 
 }
 
-export default Project
+
+//@inject('appUIStore', 'projectStore') @observer
+//class ProjectLoader extends React.Component {
+//  componentWillReceiveProps(props) {
+//    let p = props.projectStore.fetch({id: props.params.projectId, props: 
+//      [
+//        'id',
+//        'name',
+//      ]
+//    })
+//    
+//    if(p){
+//    p.then((response)=>{
+//      console.log('Project p', response)
+//      this.project = response
+//    })
+//    console.log(p)
+//    console.log('Project', this.project)
+//    }
+//  }
+//  
+//  render(){
+//    return(<Project />)
+//  }
+//}
+
+
+export default ProjectWrapper
