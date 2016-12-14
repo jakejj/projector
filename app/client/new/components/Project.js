@@ -8,12 +8,12 @@ class Wrapper extends React.Component {
 
   constructor(props) {
     super(props)
-    this.props.fetchModel(props)
+    this.props.fetchData(props)
   }
 
   componentWillReceiveProps(nextProps){
     if(this.props.params !== nextProps.params){
-      this.props.fetchModel(nextProps)
+      this.props.fetchData(nextProps)
     }
   }
 
@@ -26,14 +26,31 @@ class Wrapper extends React.Component {
 class ProjectWrapper extends React.Component {
 
 
-  fetchModel(){
-    return this.props.projectStore.fetch({id: this.props.params.projectId, props: 
-      [
-        'id',
-        'name',
-        'created_at'
-      ]
-    })
+  fetchData(){
+    return this.props.projectStore.load(
+      'Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'], 
+      {option: 'First Option'})
+
+    //fetch(
+    //  'Project', { id: '1' }, ['id, name, createdAt'],
+    //  'Tasks', { projectId: '1' }, ['id, name, createdAt'], 
+    //  options
+    //)
+
+    //return this.props.projectStore.fetch({
+    //  type: 'Project',
+    //  params: { id: '1' },
+    //  fields: ['id, name, createdAt']
+    //})
+
+    
+    //return this.props.projectStore.fetch({id: this.props.params.projectId, props: 
+    //  [
+    //    'id',
+    //    'name',
+    //    'created_at'
+    //  ]
+    //})
     
 //    {
 //      {
@@ -57,9 +74,13 @@ class ProjectWrapper extends React.Component {
 
 
   render(){
-    let project = this.props.projectStore.get({id: this.props.params.projectId})
+    //let project = this.props.projectStore.get({id: this.props.params.projectId})
+    
+    let project = this.props.projectStore.newget('Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'])
+    //let project = this.props.projectStore.newget('Project', {name: 'Crabrat'}, ['name', 'createdAt'])[0]
+
     return( 
-      <Wrapper params={this.props.params} fetchModel={this.fetchModel.bind(this)}>
+      <Wrapper params={this.props.params} fetchData={this.fetchData.bind(this)}>
         <Project project={project} projectStore={this.props.projectStore} params={this.props.params}></Project>
       </Wrapper>
     )

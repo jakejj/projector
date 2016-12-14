@@ -24,6 +24,7 @@
     "mobx": "2.5.0",
     "mobx-react": "3.5.5",
     "mobx-store": "^3.2.3",
+    "pluralize": "^3.0.0",
     "ramda": "^0.19.1",
     "react": "^15.1.0",
     "react-bootstrap": "0.30.3",

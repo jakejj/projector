@@ -1,7 +1,7 @@
 import mobx, { action, computed, observable, extendObservable } from 'mobx'
 import _ from 'lodash'
 import { reduce } from 'lodash/fp'
-import { camelizeObject, decamelizeObject, isPromise } from '../../utils/utils';
+import { camelizeObject, decamelizeObject, isPromise, inGroupsOf, pluralize } from '../../utils/utils';
 
 import ProjectModel from './project-model'
 
@@ -61,19 +61,12 @@ export default class ProjectStore {
 
 
   @action('addProject') add(model){
-//    let existingModel = this.projects.get(model.id)
-//console.log('existing', existingModel)
-//console.log('new', model)
-//    if(existingModel){
-//      //_.merge(existingModel, model)
-//console.log('updating')
-//console.log(existingModel.createdAt)
-//      existingModel.createdAt = model.createdAt
-//console.log(existingModel.createdAt)
-//    } else {
-//console.log('adding')
-      this.projects.set(model.id, model)
-//    }
+    //let existingModel = this.projects.get(model.id)
+    //if(existingModel){
+    //  existingModel.createdAt = model.createdAt
+    //} else {
+    this.projects.set(model.id, model)
+    //}
   }
 
 
@@ -100,16 +93,70 @@ export default class ProjectStore {
 
 
 
+  newhasAllProperties(model, fields){
+    return _.every(fields, (field)=>{ return model[field] !== undefined })
+  }
+
+  find(params, fields=[]){
+    let found = []
+    this.projects.forEach((value, key)=>{
+      let match = _.every(Object.keys(params), (paramKey)=>{
+        return value[paramKey] === params[paramKey]
+      })
+      if(match && this.newhasAllProperties(value, fields)){ found.push(value) }
+    })
+    return found
+  }
 
 
+  processGetRequest(request){
+    let modelName = request[0].toLowerCase()
+    let params = request[1]
+    let fields = request[2]
 
+    if(params.id){
+      let found = this[pluralize(modelName)].get(params.id)
+      return (found && this.newhasAllProperties(found, fields)) ? found : null
+    } else {
+      return this.find(params, fields)
+    }
+  }
 
+  // Options {bypassCache: true}
+  newget(...args){
+    if(args.length < 3){ throw('At least 3 arguments are required: model type, params, fields.') }
+    let options
+    if(args.length % 3 != 0){ options = args.pop() }
+    let requests = inGroupsOf(args, 3)
 
+    let cached = this.app.backend.checkQueryCache(requests)
+    if(!cached){ return null }
 
+    if(requests.length > 1){
+      responses = null
+      requests.forEach((request)=>{
+        response = this.processGetRequest(request)
+        
+        if(response){ 
+          if(responses === null){ responses = [] }
+          responses.push(response)
+        }
+        
+        return responses
+      })
+    } else {
+      return this.processGetRequest(requests[0])
+    }
+    
+  }
 
+  load(...args){
+    if(args.length < 3){ throw('At least 3 arguments are required: model type, params, fields.') }
+    let options
+    if(args.length % 3 != 0){ options = args.pop() }
+    let requests = inGroupsOf(args, 3)
 
-  load(options){
-    app.backend.loadFromGql(app, app.backend.getQuery())
+    app.backend.loadFromGql(app, requests)
     
     
     
@@ -204,9 +251,8 @@ export default class ProjectStore {
   // alwaysReturnPromise - Not implemented yet - always returns a promise that will either 
   //    resolive immediately or 
   //    when the request is fulfilled if it hasn't been fulfilled yet.
-  fetch(options){
-    let found
-    found = this.get(options)
+  fetch(request, options){
+    let found = false //this.get(options)
     if(!found){ found = this.load(options) }
 
     //if(options isPromise(found)){

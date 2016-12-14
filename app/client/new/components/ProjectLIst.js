@@ -10,13 +10,13 @@ class ProjectList extends React.Component {
 
   constructor(props) {
     super(props)
-    props.projectStore.fetch({})
+    let projects = this.props.projectStore.load('Projects', {}, ['id', 'name'])
   }
 
   render(){
-    
-    
-    if(!this.props.projectStore.listLoaded){ return(<Loading />) }
+    let projects = this.props.projectStore.newget('Projects', {}, ['id', 'name'])
+
+    if(!projects){ return(<Loading />) }
     return (
       <Grid id="projects" fluid={true}>
         <Row>
