@@ -14,7 +14,7 @@ class ProjectList extends React.Component {
   }
 
   render(){
-    let projects = this.props.projectStore.newget('Projects', {}, ['id', 'name'])
+    let projects = this.props.projectStore.get('Projects', {}, ['id', 'name'])
 
     if(!projects){ return(<Loading />) }
     return (

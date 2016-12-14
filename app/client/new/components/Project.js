@@ -4,7 +4,7 @@ import { observer, inject } from 'mobx-react'
 import Loading from './Loading'
 
 
-class Wrapper extends React.Component {
+class Loader extends React.Component {
 
   constructor(props) {
     super(props)
@@ -23,70 +23,33 @@ class Wrapper extends React.Component {
 
 
 @inject('appUIStore', 'projectStore') @observer
-class ProjectWrapper extends React.Component {
+class ProjectLoader extends React.Component {
 
+  query(){
+    return ['Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt']]
+  }
 
   fetchData(){
-    return this.props.projectStore.load(
-      'Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'], 
-      {option: 'First Option'})
-
-    //fetch(
-    //  'Project', { id: '1' }, ['id, name, createdAt'],
-    //  'Tasks', { projectId: '1' }, ['id, name, createdAt'], 
-    //  options
-    //)
-
-    //return this.props.projectStore.fetch({
-    //  type: 'Project',
-    //  params: { id: '1' },
-    //  fields: ['id, name, createdAt']
-    //})
-
-    
-    //return this.props.projectStore.fetch({id: this.props.params.projectId, props: 
-    //  [
-    //    'id',
-    //    'name',
-    //    'created_at'
-    //  ]
-    //})
-    
-//    {
-//      {
-//        type: 'Project'
-//        params: { id: '1' }
-//        fields: ['id, name, createdAt, completed_tasks']
-//      }
-//      {
-//        type: 'Task'
-//        params: {
-//          projectId: '1'
-//        }
-//        fields: ['id', 'name']
-//      }
-//    }
-    
+    return this.props.projectStore.fetch(
+      ...this.query(), 
+      {option: 'First Option'}
+    )
   }
 
 
-
-
-
   render(){
-    //let project = this.props.projectStore.get({id: this.props.params.projectId})
-    
-    let project = this.props.projectStore.newget('Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'])
-    //let project = this.props.projectStore.newget('Project', {name: 'Crabrat'}, ['name', 'createdAt'])[0]
+    let project = this.props.projectStore.get(...this.query())
+    //let project = this.props.projectStore.get('Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'])
 
     return( 
-      <Wrapper params={this.props.params} fetchData={this.fetchData.bind(this)}>
+      <Loader params={this.props.params} fetchData={this.fetchData.bind(this)}>
         <Project project={project} projectStore={this.props.projectStore} params={this.props.params}></Project>
-      </Wrapper>
+      </Loader>
     )
   }
 
 }
+
 
 @observer
 class Project extends React.Component {
@@ -113,30 +76,4 @@ class Project extends React.Component {
 }
 
 
-//@inject('appUIStore', 'projectStore') @observer
-//class ProjectLoader extends React.Component {
-//  componentWillReceiveProps(props) {
-//    let p = props.projectStore.fetch({id: props.params.projectId, props: 
-//      [
-//        'id',
-//        'name',
-//      ]
-//    })
-//    
-//    if(p){
-//    p.then((response)=>{
-//      console.log('Project p', response)
-//      this.project = response
-//    })
-//    console.log(p)
-//    console.log('Project', this.project)
-//    }
-//  }
-//  
-//  render(){
-//    return(<Project />)
-//  }
-//}
-
-
-export default ProjectWrapper
+export default ProjectLoader
