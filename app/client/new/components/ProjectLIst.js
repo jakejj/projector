@@ -22,6 +22,7 @@ class ProjectList extends React.Component {
         <Row>
           <Col md={12}>
             <h1 className="page-title">Projects</h1>
+            <Link to={"/new/projects/new"} className="btn btn-default">+</Link>
           </Col>
         </Row>
         { this.props.projectStore.all.map((item, index)=>{ return(

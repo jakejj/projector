@@ -4,6 +4,7 @@ import { Match, Miss, Link } from 'react-router'
 import LayoutSwitcher from './LayoutSwitcher'
 import ProjectList from './ProjectList'
 import Project from './Project'
+import ProjectNew from './ProjectNew'
 
 
 class Projects extends React.Component {
@@ -15,6 +16,7 @@ class Projects extends React.Component {
       <LayoutSwitcher mobile={mobile}>
         <ProjectList />
         
+        <Match pattern={`${pathname}/new`} component={ProjectNew} />
         <Match pattern={`${pathname}/:projectId`} component={Project} />
         <Miss render={() => (
           <div>None Selected</div>

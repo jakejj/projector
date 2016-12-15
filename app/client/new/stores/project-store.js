@@ -186,6 +186,12 @@ export default class ProjectStore {
 
 
 
+  createProject(name){
+    let gql = 'mutation createProject($name: String!){createProject(input: {name: $name}){ project{ id, name } }}'
+    app.backend.mutateData(this.app, gql, {name: name})
+  }
+
+
 
 
 

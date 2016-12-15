@@ -98,4 +98,27 @@ export default {
     })
   },
 
+
+
+
+
+
+
+
+  mutateData(app, gqlMutation, variables){
+    this.executeGqlMutation(app.api, app.gqlUrl, gqlMutation, variables)
+  },
+
+
+  executeGqlMutation: function(api, url, gqlMutation, variables){
+    return api.post(url, {query: gqlMutation, variables: variables})
+    let resultPromise = this.executeGqlQuery(app.api, app.gqlUrl, gql)
+    return resultPromise.then((results)=>{
+      this.parseGqlQueryResults(app, results.data)
+      this.addQueriesToCache(requests)
+    })
+  }
+
+
+
 }
