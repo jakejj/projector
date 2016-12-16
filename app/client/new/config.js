@@ -14,8 +14,10 @@ import GqlStore from './stores/gql-store'
 
 import AppUIStore from './stores/app-ui-store'
 import MessageUIStore from './stores/message-ui-store'
+import UIFormStore from './stores/ui-form-store'
 import ProjectStore from './stores/project-store'
 import ProjectModel from './stores/project-model'
+
 
 const api = Axios.create({
   headers: {
@@ -36,7 +38,9 @@ app.gqlUrl = 'http://localhost:3060/api/gql'
 app.appUIStore = new AppUIStore(app)
 app.messageUIStore = new MessageUIStore(app)
 app.projectStore = new ProjectStore(app, {api: api})
+app.uiFormStore = new UIFormStore(app)
 app.ProjectModel = ProjectModel
+
 
 window.app = app
 export default app
