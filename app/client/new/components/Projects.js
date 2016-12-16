@@ -15,12 +15,14 @@ class Projects extends React.Component {
     return(
       <LayoutSwitcher mobile={mobile}>
         <ProjectList />
-        
+
         <div>
           <Match pattern={`${pathname}/:projectId`} render={(matchProps) => (
             <div>
               <Match pattern={`${pathname}/new`} component={ProjectNew} />
-              <Miss render={() => <Project {...matchProps}/> }/>
+              <Miss render={() => matchProps.params.projectId !== 'new'
+                ? <Project {...matchProps}/>
+                : null }/>
             </div>
           )}/>
         </div>

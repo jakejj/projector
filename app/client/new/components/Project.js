@@ -31,7 +31,7 @@ class ProjectLoader extends React.Component {
 
   fetchData(){
     return this.props.projectStore.fetch(
-      ...this.query(), 
+      ...this.query(),
       {option: 'First Option'}
     )
   }
@@ -41,7 +41,7 @@ class ProjectLoader extends React.Component {
     let project = this.props.projectStore.get(...this.query())
     //let project = this.props.projectStore.get('Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt'])
 
-    return( 
+    return(
       <Loader params={this.props.params} fetchData={this.fetchData.bind(this)}>
         <Project project={project} projectStore={this.props.projectStore} params={this.props.params}></Project>
       </Loader>
