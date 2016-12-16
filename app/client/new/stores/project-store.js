@@ -160,7 +160,7 @@ export default class ProjectStore {
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
 
-    app.backend.loadFromGql(app, requests)
+    app.backend.loadData(app, requests)
   }
 
 

@@ -10,7 +10,7 @@ import mobxstore from 'mobx-store'
 //import VesselStore from './stores/VesselStore'
 
 import App from './components/app'
-import backend from './backend'
+import GqlStore from './stores/gql-store'
 
 import AppUIStore from './stores/app-ui-store'
 import MessageUIStore from './stores/message-ui-store'
@@ -31,7 +31,7 @@ let app = {
 //app.MessageUIStore = new MessageUIStore(app)
 //app.VesselStore = new VesselStore(app, {api: api, year: '2016'})
 
-app.backend = backend
+app.backend = new GqlStore(app)
 app.gqlUrl = 'http://localhost:3060/api/gql'
 app.appUIStore = new AppUIStore(app)
 app.messageUIStore = new MessageUIStore(app)

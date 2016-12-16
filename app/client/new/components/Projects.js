@@ -9,18 +9,21 @@ import ProjectNew from './ProjectNew'
 
 class Projects extends React.Component {
   render(){
-    let { pathname, projectId } = this.props
+    let { pathname } = this.props
     let mobile = false
 
     return(
       <LayoutSwitcher mobile={mobile}>
         <ProjectList />
         
-        <Match pattern={`${pathname}/new`} component={ProjectNew} />
-        <Match pattern={`${pathname}/:projectId`} component={Project} />
-        <Miss render={() => (
-          <div>None Selected</div>
-        )}/>
+        <div>
+          <Match pattern={`${pathname}/:projectId`} render={(matchProps) => (
+            <div>
+              <Match pattern={`${pathname}/new`} component={ProjectNew} />
+              <Miss render={() => <Project {...matchProps}/> }/>
+            </div>
+          )}/>
+        </div>
         { this.props.children ? this.props.children : <div></div> }
       </LayoutSwitcher>
     )
