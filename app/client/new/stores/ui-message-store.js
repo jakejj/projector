@@ -3,7 +3,7 @@ import _ from 'lodash'
 import {filter, sortBy, map} from 'lodash/fp'
 
 
-export default class MessageUIStore {
+export default class UIMessageStore {
   @observable messages = []
 
   constructor(app, {} = {}){

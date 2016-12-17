@@ -6,18 +6,6 @@ import { camelizeObject, decamelizeObject, isPromise, inGroupsOf, pluralize } fr
 import ProjectModel from './project-model'
 
 
-function makeUrlQueryString(query){
-  query = decamelizeObject(query)
-  if(Object.keys(query).length == 0){ return '' }
-
-  return reduce((queryString, key) => {
-    if(queryString != '?'){ queryString = queryString + '&'}
-    queryString = queryString + key + '=' + query[key]
-    return queryString
-  }, '?', Object.keys(query))
-}
-
-
 export default class ProjectStore {
   @observable projects = mobx.map({})
   @observable listLoaded = false
@@ -27,36 +15,6 @@ export default class ProjectStore {
     this.app = app
     this.api = api
     this.loadedRequests = []
-  }
-
-
-  @action('loadProjects') load(options={}){
-    if(options.id){
-      return this.loadOne(options)
-    } else { 
-      return this.loadMany(options)
-    }
-  }
-
-
-
-
-  update(model, values){
-    let url = '/api/projects/'+model.id+'.json'
-    model = _.merge(model, values)
-    
-    let payload = mobx.toJS(model)
-    payload.app = undefined
-
-    return app.api.put(url, payload)
-    .then((response) => {
-      return response
-    })
-    .catch((response) => {
-      console.log('Error updating model')
-      console.log(response)
-      throw response
-    })
   }
 
 
@@ -132,7 +90,7 @@ export default class ProjectStore {
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
 
-    let cached = this.app.backend.checkQueryCache(requests)
+    let cached = this.app.gqlStore.checkQueryCache(requests)
     if(!cached){ return null }
 
     if(requests.length > 1){
@@ -160,7 +118,7 @@ export default class ProjectStore {
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
 
-    app.backend.loadData(app, requests)
+    app.gqlStore.loadData(app, requests)
   }
 
 
@@ -182,13 +140,9 @@ export default class ProjectStore {
   }
 
 
-
-
-
-
   createProject({name} = {}){
     let gql = 'mutation createProject($name: String!){createProject(input: {name: $name}){ project{ id, name } }}'
-    app.backend.mutateData(this.app, gql, {name: name})
+    app.gqlStore.mutateData(this.app, gql, {name: name})
   }
 
 
@@ -199,6 +153,23 @@ export default class ProjectStore {
 
 
 
+
+
+
+
+
+
+
+
+
+
+  @action('loadProjects') restLoad(options={}){
+    if(options.id){
+      return this.loadOne(options)
+    } else { 
+      return this.loadMany(options)
+    }
+  }
 
 
   restLoad(options){
@@ -292,4 +263,35 @@ export default class ProjectStore {
     return true
   }
 
+  restUpdate(model, values){
+    let url = '/api/projects/'+model.id+'.json'
+    model = _.merge(model, values)
+    
+    let payload = mobx.toJS(model)
+    payload.app = undefined
+
+    return app.api.put(url, payload)
+    .then((response) => {
+      return response
+    })
+    .catch((response) => {
+      console.log('Error updating model')
+      console.log(response)
+      throw response
+    })
+  }
+}
+
+
+
+
+function makeUrlQueryString(query){
+  query = decamelizeObject(query)
+  if(Object.keys(query).length == 0){ return '' }
+
+  return reduce((queryString, key) => {
+    if(queryString != '?'){ queryString = queryString + '&'}
+    queryString = queryString + key + '=' + query[key]
+    return queryString
+  }, '?', Object.keys(query))
 }

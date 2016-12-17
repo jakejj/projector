@@ -3,11 +3,11 @@ import { observer, inject } from 'mobx-react'
 import { Link } from 'react-router'
 
 
-@inject('messageUIStore') @observer
+@inject('uiMessageStore') @observer
 class Messages extends React.Component {
 
   render(){
-    let messages = this.props.messageUIStore.messages
+    let messages = this.props.uiMessageStore.messages
     
     if(messages && messages.length > 0) {
       return(

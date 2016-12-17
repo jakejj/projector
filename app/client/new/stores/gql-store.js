@@ -24,7 +24,6 @@ export default class GqlStore {
   }
 
 
-
   loadData(app, requests){
     let gql = this.toGql(requests)
     let resultPromise = this.executeGqlQuery(app.api, app.gqlUrl, gql)
@@ -33,6 +32,7 @@ export default class GqlStore {
       this.addQueriesToCache(requests)
     })
   }
+
 
   parseGqlQueryResultsHelper(app, data){
     Object.keys(data).forEach((key)=>{
@@ -66,77 +66,56 @@ export default class GqlStore {
   }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
   hasQueryCacheItem(request){
     return _.some(this.queryCache, (cachedQuery)=>{ return this.compareRequests(request, cachedQuery) })
   }
 
 
-    compareRequests(request, cached){
-      return request[0] === cached[0] && compareObjects(request[1], cached[1]) && this.areArrayValuesContained(request[2], cached[2]) ? true : false
+  compareRequests(request, cached){
+    return request[0] === cached[0] && compareObjects(request[1], cached[1]) && this.areArrayValuesContained(request[2], cached[2]) ? true : false
+  }
+
+
+  areArrayValuesContained(array, containedByArray){
+    return _.every(array, (value)=>{ return _.some(containedByArray, (containedByArrayValue)=>{ return value === containedByArrayValue }) })
+  }
+
+
+  toGql(requests, operationType='query'){
+    let gqlQuery = operationType + ' {\n'
+    gqlQuery += requests.map((request)=>{
+      return this.makeQuery(request)
+    }).join(', \n')
+    gqlQuery += '\n }'
+    return gqlQuery
+  }
+
+
+  makeQuery(request){
+    let modelName = request[0].toLowerCase()
+    let params = request[1]
+    let fields = request[2]
+    if(!_.includes(fields, 'id')){ fields.push('id') }
+
+    let str = modelName
+    if(params && Object.keys(params).length > 0){
+      str += '(' + Object.keys(params).map((key)=>{ return key + ': ' + params[key] }) + ')'
     }
+    str += '{' + fields.join(', ') + '}'
+    return str
+  }
 
 
-    areArrayValuesContained(array, containedByArray){
-      return _.every(array, (value)=>{ return _.some(containedByArray, (containedByArrayValue)=>{ return value === containedByArrayValue }) })
-    }
+  executeGqlQuery(api, url, gqlQuery, variables={}){
+    return api.post(url, {query: gqlQuery, variables: variables})
+  }
 
 
-    toGql(requests, operationType='query'){
-      let gqlQuery = operationType + ' {\n'
-      gqlQuery += requests.map((request)=>{
-        return this.makeQuery(request)
-      }).join(', \n')
-      gqlQuery += '\n }'
-      return gqlQuery
-    }
-
-
-    makeQuery(request){
-      let modelName = request[0].toLowerCase()
-      let params = request[1]
-      let fields = request[2]
-      if(!_.includes(fields, 'id')){ fields.push('id') }
-
-      let str = modelName
-      if(params && Object.keys(params).length > 0){
-        str += '(' + Object.keys(params).map((key)=>{ return key + ': ' + params[key] }) + ')'
-      }
-      str += '{' + fields.join(', ') + '}'
-      return str
-    }
-
-
-    executeGqlQuery(api, url, gqlQuery, variables={}){
-      return api.post(url, {query: gqlQuery, variables: variables})
-    }
-
-
-    executeGqlMutation(api, url, gqlMutation, variables){
-      let resultPromise = this.executeGqlQuery(api, url, gqlMutation, variables)
-      return resultPromise.then((results)=>{
-        this.parseGqlQueryResults(app, results.data)
-      })
-    }
-
-
-
-
+  executeGqlMutation(api, url, gqlMutation, variables){
+    let resultPromise = this.executeGqlQuery(api, url, gqlMutation, variables)
+    return resultPromise.then((results)=>{
+      this.parseGqlQueryResults(app, results.data)
+    })
+  }
 
 }
