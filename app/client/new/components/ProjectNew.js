@@ -13,7 +13,7 @@ class ProjectNew extends React.Component {
 
   render(){
     return(
-      <FormState container={this}>
+      <FormState viewModel={this.getViewModel()}>
         <ProjectNewForm />
       </FormState >
     )

@@ -12,14 +12,14 @@ class Loader extends React.Component {
   }
 
   componentWillReceiveProps(nextProps){
-    if(this.props.container.props.params !== nextProps.params){
+    if(this.props.params !== nextProps.params){
       this.fetchData(nextProps)
     }
   }
 
   fetchData(){
     return this.props.container.props.projectStore.fetch(
-      ...this.props.container.query(),
+      ...this.props.query(),
       {option: 'First Option'}
     )
   }
@@ -40,7 +40,7 @@ class ProjectLoader extends React.Component {
     let project = this.props.projectStore.get(...this.query())
 
     return(
-      <Loader container={this} >
+      <Loader container={this} params={this.props.params} query={this.query.bind(this)} >
         <Project project={project} />
       </Loader>
     )
