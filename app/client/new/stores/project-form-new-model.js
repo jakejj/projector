@@ -11,10 +11,10 @@ export default class ProjectFormNewModel {
   }
 
   @action('updateProjectFormNewModel') update(values){
-    _.mapKeys(values, (value, key)=>{ self[key] = value })
+    _.mapKeys(values, (value, key)=>{ this[key] = value })
     //return this.app.ProjectsStore.update(this)
   }
-  
+
   save(){
     console.log(this)
   }
