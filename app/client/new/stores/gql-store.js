@@ -16,7 +16,7 @@ export default class GqlStore {
 
   checkQueryCache(requests){
     if(Array.isArray(requests) && typeof requests[0] !== 'string' ){
-      return _.every(requests, (request)=>{ 
+      return _.every(requests, (request)=>{
         return this.hasQueryCacheItem(request) })
     } else {
       return this.hasQueryCacheItem(requests)
@@ -34,15 +34,14 @@ export default class GqlStore {
     })
   }
 
-
-  @mobx.action('Import Models') parseGqlQueryResults(app, results){
-    let data = results.data
-    let errors = results.errors
-    
+  parseGqlQueryResultsHelper(app, data){
     Object.keys(data).forEach((key)=>{
       let value = data[key]
       let storeName = singularize(key) + 'Store'
-      
+      if (!app[storeName]) {
+        return this.parseGqlQueryResultsHelper(app, value)
+      }
+
       if(Array.isArray(value)){
         value.forEach((val)=>{
           app[storeName].add(val)
@@ -51,6 +50,14 @@ export default class GqlStore {
         app[storeName].add(value)
       }
     })
+  }
+
+
+  @mobx.action('Import Models') parseGqlQueryResults(app, results){
+    let data = results.data
+    let errors = results.errors
+
+    this.parseGqlQueryResultsHelper(app, data)
   }
 
 
@@ -116,17 +123,15 @@ export default class GqlStore {
     }
 
 
-    executeGqlQuery(api, url, gqlQuery){
-      return api.post(url, {query: gqlQuery})
+    executeGqlQuery(api, url, gqlQuery, variables={}){
+      return api.post(url, {query: gqlQuery, variables: variables})
     }
 
 
     executeGqlMutation(api, url, gqlMutation, variables){
-      return api.post(url, {query: gqlMutation, variables: variables})
-      let resultPromise = this.executeGqlQuery(app.api, app.gqlUrl, gql)
+      let resultPromise = this.executeGqlQuery(api, url, gqlMutation, variables)
       return resultPromise.then((results)=>{
         this.parseGqlQueryResults(app, results.data)
-        this.addQueriesToCache(requests)
       })
     }
 
@@ -135,6 +140,3 @@ export default class GqlStore {
 
 
 }
-
-
-

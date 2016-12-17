@@ -1,6 +1,7 @@
 import React from 'react'
 
-//FormState's container must pass itself as prop called container and must have a getViewModel function.
+//FormState must receive viewModel, which must implement a save function and it must
+//have properties matching the name property of the form inputs. 
 export class FormState extends React.Component {
 
   componentWillUnmount(){

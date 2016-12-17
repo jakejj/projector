@@ -16,7 +16,7 @@ export default class ProjectFormNewModel {
   }
 
   save(){
-    console.log(this)
+    this.app.projectStore.createProject({name: this.name})
   }
 
 }
