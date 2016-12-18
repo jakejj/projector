@@ -4,6 +4,7 @@ import { action, computed, observable } from 'mobx'
 export default class ProjectFormNewModel {
   @observable name =  ''
   @observable saving =  false
+  @observable saved = false
 
   constructor(app, values={}){
     this.initialValues = values
@@ -29,6 +30,7 @@ export default class ProjectFormNewModel {
     .then((status) => {
       this.saving = false
       if (status.success) {
+        this.saved = true
         this.reset()
       }
       return status

@@ -4,6 +4,7 @@ import { observer, inject } from 'mobx-react'
 import ProjectFormNewModel from '../stores/project-form-new-model'
 import FormState from './FormState'
 import Loading from './Loading'
+import { Redirect } from 'react-router'
 
 @inject('uiFormStore', 'uiMessageStore') @observer
 class ProjectNew extends React.Component {
@@ -33,7 +34,11 @@ class ProjectNew extends React.Component {
 }
 
 const ProjectNewForm = observer((props) => {
+  console.log('called')
   if(props.viewModel.saving){ return(<Loading />) }
+  if(props.viewModel.saved){
+    return (<Redirect to='/new/projects' />)
+  }
   return(
     <form onSubmit={props.handleSubmit}>
       <FormGroup controlId="formNewProject">
