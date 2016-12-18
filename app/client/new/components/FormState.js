@@ -1,7 +1,7 @@
 import React from 'react'
 
 //FormState must receive viewModel, which must implement a save function and it must
-//have properties matching the name property of the form inputs. 
+//have properties matching the name property of the form inputs.
 export class FormState extends React.Component {
 
   componentWillUnmount(){
@@ -10,7 +10,13 @@ export class FormState extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    this.props.viewModel.save()
+    this.props.viewModel.save().then((status) => {
+      if (status.success) {
+        this.props.success && this.props.success()
+      } else {
+        this.props.failure && this.props.failure(status.errors)
+      }
+    })
   }
 
   handleChange(e){

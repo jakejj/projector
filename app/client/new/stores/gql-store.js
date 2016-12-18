@@ -57,12 +57,17 @@ export default class GqlStore {
     let data = results.data
     let errors = results.errors
 
-    this.parseGqlQueryResultsHelper(app, data)
+    data && this.parseGqlQueryResultsHelper(app, data)
+
+    errors = (errors && errors.map((error) => {
+      return error
+    }))
+    return {errors: errors, success: !!!errors}
   }
 
 
   mutateData(app, gqlMutation, variables){
-    this.executeGqlMutation(app.api, app.gqlUrl, gqlMutation, variables)
+    return this.executeGqlMutation(app.api, app.gqlUrl, gqlMutation, variables)
   }
 
 
@@ -114,7 +119,7 @@ export default class GqlStore {
   executeGqlMutation(api, url, gqlMutation, variables){
     let resultPromise = this.executeGqlQuery(api, url, gqlMutation, variables)
     return resultPromise.then((results)=>{
-      this.parseGqlQueryResults(app, results.data)
+      return this.parseGqlQueryResults(app, results.data)
     })
   }
 

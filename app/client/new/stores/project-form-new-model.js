@@ -2,9 +2,11 @@ import { action, computed, observable } from 'mobx'
 
 
 export default class ProjectFormNewModel {
-  @observable name =  'initial'
+  @observable name =  ''
+  @observable saving =  false
 
   constructor(app, values={}){
+    this.initialValues = values
     this.app = app
     this.update(this, values)
     return this
@@ -15,8 +17,22 @@ export default class ProjectFormNewModel {
     //return this.app.ProjectsStore.update(this)
   }
 
+  @action('resetProjectFormNewModel') reset() {
+    this.name = ''
+    this.saving = false
+    this.update(this.initialValues)
+  }
+
   save(){
-    this.app.projectStore.createProject({name: this.name})
+    this.saving = true
+    return this.app.projectStore.createProject({name: this.name})
+    .then((status) => {
+      this.saving = false
+      if (status.success) {
+        this.reset()
+      }
+      return status
+    })
   }
 
 }

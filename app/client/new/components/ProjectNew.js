@@ -3,17 +3,28 @@ import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 're
 import { observer, inject } from 'mobx-react'
 import ProjectFormNewModel from '../stores/project-form-new-model'
 import FormState from './FormState'
+import Loading from './Loading'
 
-@inject('uiFormStore') @observer
+@inject('uiFormStore', 'uiMessageStore') @observer
 class ProjectNew extends React.Component {
 
   getViewModel() {
     return this.props.uiFormStore.use('projectNewForm', ProjectFormNewModel)
   }
 
+  success() {
+    this.props.uiMessageStore.add('Project Created', 'success')
+  }
+
+  failure(errors) {
+    this.props.uiMessageStore.add('Server Error', 'error')
+  }
+
   render(){
     return(
-      <FormState viewModel={this.getViewModel()}>
+      <FormState viewModel={this.getViewModel()}
+                 success={this.success.bind(this)}
+                 failure={this.failure.bind(this)} >
         <ProjectNewForm />
       </FormState >
     )
@@ -22,6 +33,7 @@ class ProjectNew extends React.Component {
 }
 
 const ProjectNewForm = observer((props) => {
+  if(props.viewModel.saving){ return(<Loading />) }
   return(
     <form onSubmit={props.handleSubmit}>
       <FormGroup controlId="formNewProject">

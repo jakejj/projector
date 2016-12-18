@@ -8,7 +8,7 @@ class Messages extends React.Component {
 
   render(){
     let messages = this.props.uiMessageStore.messages
-    
+
     if(messages && messages.length > 0) {
       return(
         <div id="messages">

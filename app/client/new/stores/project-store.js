@@ -97,18 +97,18 @@ export default class ProjectStore {
       responses = null
       requests.forEach((request)=>{
         response = this.processGetRequest(request)
-        
-        if(response){ 
+
+        if(response){
           if(responses === null){ responses = [] }
           responses.push(response)
         }
-        
+
         return responses
       })
     } else {
       return this.processGetRequest(requests[0])
     }
-    
+
   }
 
 
@@ -125,24 +125,24 @@ export default class ProjectStore {
   // Options:
   //
   // returnPromise - returns a promise if an the request hasn't been fulfilled yet
-  // alwaysReturnPromise - Not implemented yet - always returns a promise that will either 
-  //    resolive immediately or 
+  // alwaysReturnPromise - Not implemented yet - always returns a promise that will either
+  //    resolive immediately or
   //    when the request is fulfilled if it hasn't been fulfilled yet.
   fetch(...args){
     let found = this.get(...args)
     if(!found){ found = this.load(...args) }
 
     //if(options isPromise(found)){
-    //  
+    //
     //}
-    
+
     return found
   }
 
 
   createProject({name} = {}){
     let gql = 'mutation createProject($name: String!){createProject(input: {name: $name}){ project{ id, name } }}'
-    app.gqlStore.mutateData(this.app, gql, {name: name})
+    return app.gqlStore.mutateData(this.app, gql, {name: name})
   }
 
 
@@ -166,7 +166,7 @@ export default class ProjectStore {
   @action('loadProjects') restLoad(options={}){
     if(options.id){
       return this.loadOne(options)
-    } else { 
+    } else {
       return this.loadMany(options)
     }
   }
@@ -266,7 +266,7 @@ export default class ProjectStore {
   restUpdate(model, values){
     let url = '/api/projects/'+model.id+'.json'
     model = _.merge(model, values)
-    
+
     let payload = mobx.toJS(model)
     payload.app = undefined
 

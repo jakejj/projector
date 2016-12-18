@@ -3,6 +3,7 @@ CreateProjectMutation = GraphQL::Relay::Mutation.define do
 
   input_field :name, !types.String
 
+
   return_field :project, ProjectType
 
   resolve ->(object, inputs, context) {
