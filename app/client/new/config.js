@@ -14,6 +14,7 @@ import GqlStore from './stores/gql-store'
 
 import AppUIStore from './stores/app-ui-store'
 import UIMessageStore from './stores/ui-message-store'
+import UIRouteStore from './stores/ui-route-store'
 import UIFormStore from './stores/ui-form-store'
 import ProjectStore from './stores/project-store'
 import ProjectModel from './stores/project-model'
@@ -33,6 +34,7 @@ let app = {
 //app.UIMessageStore = new UIMessageStore(app)
 //app.VesselStore = new VesselStore(app, {api: api, year: '2016'})
 
+app.uiRouteStore = new UIRouteStore(app)
 app.gqlStore = new GqlStore(app)
 app.gqlUrl = 'http://localhost:3060/api/gql'
 app.appUIStore = new AppUIStore(app)

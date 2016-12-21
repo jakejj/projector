@@ -8,6 +8,8 @@ import DevTools from 'mobx-react-devtools';
 import app from '../config'
 import Messages from './Messages'
 import Projects from './Projects'
+import RouteMonitor from './RouteMonitor'
+
 
 
 
@@ -20,15 +22,13 @@ class App extends React.Component {
           <div id="projector-app">
             <DevTools hightlightTimeout={60000} position={{ bottom: 0, right: 0 }} />
             <div id="projector-app-header">
-              {
-                <Messages />
-              }
-              
+              <Messages />
             </div>
             <div id="projector-app-content">
               
               { this.props.children }
               <Match pattern="/new/projects" component={Projects} />
+              <Match pattern="/new/projects" component={RouteMonitor} />
             </div>
           </div>
         </Provider>

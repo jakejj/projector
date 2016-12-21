@@ -21,6 +21,7 @@ export default class ProjectFormNewModel {
   @action('resetProjectFormNewModel') reset() {
     this.name = ''
     this.saving = false
+    this.saved = false
     this.update(this.initialValues)
   }
 
@@ -31,7 +32,10 @@ export default class ProjectFormNewModel {
       this.saving = false
       if (status.success) {
         this.saved = true
+        this.props.uiMessageStore.add('Project Created', 'success')
         this.reset()
+      } else {
+        this.props.uiMessageStore.add('Server Error', 'error')
       }
       return status
     })

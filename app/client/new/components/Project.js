@@ -29,7 +29,7 @@ class Loader extends React.Component {
 }
 
 
-@inject('appUIStore', 'projectStore') @observer
+@inject('projectStore') @observer
 class ProjectLoader extends React.Component {
 
   query(){

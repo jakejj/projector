@@ -1,6 +1,5 @@
-import mobx, { action, computed, observable, extendObservable } from 'mobx'
+import mobx, { action, computed, observable, autorun } from 'mobx'
 import _ from 'lodash'
-import {filter, sortBy, map} from 'lodash/fp'
 
 
 export default class UIMessageStore {
@@ -10,17 +9,30 @@ export default class UIMessageStore {
     this.app = app
   }
 
-  @action add = (message, messageType='success', displayTime='default')=>{
+  @action add = (message, messageType='success', displayTime)=>{
     let messageObj = {message: message, messageType: messageType}
 
+    this.messages.push(messageObj)
+
     if(displayTime){
+      // Remove the message after a set amount of time
       if(displayTime === 'default'){ displayTime = 5000}
       setTimeout(() => {
         this.remove(messageObj)
       }, 5000)
+    } else {
+      // Remove the message the next time the URL changes
+      let runs = 0
+      let disposer = autorun(() => {
+        this.app.uiRouteStore.location
+        if(runs > 0){
+          this.clear()
+          disposer()
+          runs = 0
+        }
+        runs += 1
+      })
     }
-
-    this.messages.push(messageObj)
   }
 
   @action remove = (message)=>{
@@ -28,7 +40,7 @@ export default class UIMessageStore {
   }
 
   @action clear = ()=>{
-    this.prepareState(this)
+    this.messages = []
   }
 
 }

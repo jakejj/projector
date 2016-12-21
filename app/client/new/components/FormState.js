@@ -10,13 +10,7 @@ export class FormState extends React.Component {
 
   handleSubmit(e){
     e.preventDefault()
-    this.props.viewModel.save().then((status) => {
-      if (status.success) {
-        this.props.success && this.props.success()
-      } else {
-        this.props.failure && this.props.failure(status.errors)
-      }
-    })
+    this.props.viewModel.save()
   }
 
   handleChange(e){

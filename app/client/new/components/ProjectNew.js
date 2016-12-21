@@ -13,19 +13,9 @@ class ProjectNew extends React.Component {
     return this.props.uiFormStore.use('projectNewForm', ProjectFormNewModel)
   }
 
-  success() {
-    this.props.uiMessageStore.add('Project Created', 'success')
-  }
-
-  failure(errors) {
-    this.props.uiMessageStore.add('Server Error', 'error')
-  }
-
   render(){
     return(
-      <FormState viewModel={this.getViewModel()}
-                 success={this.success.bind(this)}
-                 failure={this.failure.bind(this)} >
+      <FormState viewModel={this.getViewModel()}>
         <ProjectNewForm />
       </FormState >
     )
