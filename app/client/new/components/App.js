@@ -9,7 +9,7 @@ import app from '../config'
 import Messages from './Messages'
 import Projects from './Projects'
 import RouteMonitor from './RouteMonitor'
-
+import StateViewer from './StateViewer'
 
 
 
@@ -21,7 +21,12 @@ class App extends React.Component {
         <Provider {...app} >
           <div id="projector-app">
             <Match pattern="/" component={RouteMonitor} />
+
+
             <DevTools hightlightTimeout={60000} position={{ bottom: 0, right: 0 }} />
+            <StateViewer state={app} />
+
+
             <div id="projector-app-header">
               <Messages />
             </div>
