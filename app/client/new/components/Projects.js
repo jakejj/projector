@@ -5,6 +5,7 @@ import LayoutSwitcher from './LayoutSwitcher'
 import ProjectList from './ProjectList'
 import Project from './Project'
 import ProjectNew from './ProjectNew'
+import ProjectEdit from './ProjectEdit'
 
 
 class Projects extends React.Component {
@@ -20,6 +21,7 @@ class Projects extends React.Component {
           <Match pattern={`${pathname}/:projectId`} render={(matchProps) => (
             <div>
               <Match pattern={`${pathname}/new`} component={ProjectNew} />
+              <Match pattern={`${pathname}/:projectId/edit`} component={ProjectEdit} />
               <Miss render={() => matchProps.params.projectId !== 'new'
                 ? <Project {...matchProps}/>
                 : null }/>
@@ -33,3 +35,12 @@ class Projects extends React.Component {
 }
 
 export default Projects
+
+
+//              <Match pattern={`${pathname}/new`} component={ProjectNew} />
+//              <Miss>
+//                <Match pattern={`${pathname}/:projectId/edit`} component={ProjectNew} />
+//                <Miss render={() => matchProps.params.projectId !== 'new'
+//                  ? <Project {...matchProps}/>
+//                  : null }/>
+//              </Miss>

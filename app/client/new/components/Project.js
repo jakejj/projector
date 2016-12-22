@@ -1,32 +1,9 @@
 import React from 'react'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
+import { Link } from 'react-router'
 import { observer, inject } from 'mobx-react'
 import Loading from './Loading'
-
-
-class Loader extends React.Component {
-
-  constructor(props) {
-    super(props)
-    this.fetchData(props)
-  }
-
-  componentWillReceiveProps(nextProps){
-    if(this.props.params !== nextProps.params){
-      this.fetchData(nextProps)
-    }
-  }
-
-  fetchData(){
-    return this.props.container.props.projectStore.fetch(
-      ...this.props.query(),
-      {option: 'First Option'}
-    )
-  }
-
-  render(){ return(this.props.children) }
-
-}
+import Loader from './Loader'
 
 
 @inject('projectStore') @observer
@@ -58,6 +35,9 @@ const Project = observer((props) => {
         <Col md={12}>
           <h1 className="page-title">{project.name} ({project.createdAt})</h1>
         </Col>
+      </Row>
+      <Row>
+        <Link to={`/new/projects/${project.id}/edit`} className="btn btn-default">Edit</Link>
       </Row>
       <Row>
         <Col md={12}>

@@ -20,6 +20,7 @@ class App extends React.Component {
       <BrowserRouter>
         <Provider {...app} >
           <div id="projector-app">
+            <Match pattern="/" component={RouteMonitor} />
             <DevTools hightlightTimeout={60000} position={{ bottom: 0, right: 0 }} />
             <div id="projector-app-header">
               <Messages />
@@ -28,7 +29,6 @@ class App extends React.Component {
               
               { this.props.children }
               <Match pattern="/new/projects" component={Projects} />
-              <Match pattern="/new/projects" component={RouteMonitor} />
             </div>
           </div>
         </Provider>

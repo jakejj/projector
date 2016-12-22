@@ -9,17 +9,17 @@ export default class UIFormStore {
     this.app = app
   }
 
-  @action('CreateForm') create(key, type){
-    let viewModel = new type(app)
+  @action('CreateForm') create(key, type, model=null){
+    let viewModel = new type(app, model)
     this.forms.set(key, viewModel)
     return viewModel
   }
-  
-  use(key, type){
-    let model = this.get(key)
-    return model ? model : this.create(key, type)
+
+  use(key, type, model=null){
+    let viewModel = this.get(key)
+    return viewModel && viewModel._model == model ? viewModel : this.create(key, type, model)
   }
-  
+
   get(key){
     return this.forms.get(key)
   }
