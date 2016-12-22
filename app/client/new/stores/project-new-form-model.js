@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx'
 
 
-export default class ProjectFormNewModel {
+export default class ProjectNewFormModel {
   @observable name =  ''
   @observable saving =  false
   @observable saved = false
@@ -13,12 +13,12 @@ export default class ProjectFormNewModel {
     return this
   }
 
-  @action('updateProjectFormNewModel') update(values){
+  @action('updateProjectNewFormModel') update(values){
     _.mapKeys(values, (value, key)=>{ this[key] = value })
     //return this.app.ProjectsStore.update(this)
   }
 
-  @action('resetProjectFormNewModel') reset() {
+  @action('resetProjectNewFormModel') reset() {
     this.name = ''
     this.saving = false
     this.saved = false

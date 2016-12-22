@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
-import ProjectFormNewModel from '../stores/project-form-new-model'
+import ProjectNewFormModel from '../stores/project-new-form-model'
 import FormState from './FormState'
 import Loading from './Loading'
 import { Redirect } from 'react-router'
@@ -10,7 +10,7 @@ import { Redirect } from 'react-router'
 class ProjectNew extends React.Component {
 
   getViewModel() {
-    return this.props.uiFormStore.use('projectNewForm', ProjectFormNewModel)
+    return this.props.uiFormStore.use('projectNewForm', ProjectNewFormModel)
   }
 
   render(){
@@ -24,7 +24,6 @@ class ProjectNew extends React.Component {
 }
 
 const ProjectNewForm = observer((props) => {
-  console.log('called')
   if(props.viewModel.saving){ return(<Loading />) }
   if(props.viewModel.saved){
     return (<Redirect to='/new/projects' />)
