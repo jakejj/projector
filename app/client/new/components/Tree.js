@@ -3,7 +3,7 @@ import { observer, inject } from 'mobx-react'
 
 
 @observer
-export class Branch extends React.Component {
+class Branch extends React.Component {
 
   constructor(props){
     super(props)
@@ -32,17 +32,17 @@ export class Branch extends React.Component {
   }
 
   renderChildren(item, children, otherProps){
-    return this.isExpanded(item) && children && children.length > 0 ? <Tree {...otherProps} items={children} parent={item} /> : undefined 
+    return this.isExpanded(item) && children && children.length > 0 ? <Tree {...otherProps} items={children} parent={item} /> : undefined
   }
 
   render() {
     var {items, ...other} = this.props
-    
+
     if(this.props.branchComponent){
       return(React.createElement(this.props.branchComponent, {...other, branch: this, item: this.props.item, parent: this.props.parent}))
     } else {
       return(<BranchComponent {...other} branch={this} item={this.props.item} parent={this.props.parent}></BranchComponent>)
-      
+
     }
   }
 }
@@ -50,11 +50,11 @@ export class Branch extends React.Component {
 
 @observer
 class BranchComponent extends React.Component {
-  
+
   isLoadingChildren(item){
     if(this.props.loadingChildrenItems && (this.props.loadingChildrenItems.indexOf(item) !== -1)){return true} else {return false}
   }
-  
+
   render(){
     let {branch, item, parent, ...other} = this.props
 
@@ -64,7 +64,7 @@ class BranchComponent extends React.Component {
           { branch.getIcon(item) }
           {item.name}
         </a>
-        { 
+        {
           this.isLoadingChildren(item) ? <div>"Loading children..."</div> : branch.renderChildren(item, item.children(), other)
         }
       </li>
@@ -74,7 +74,7 @@ class BranchComponent extends React.Component {
 
 
 @observer
-export class Tree extends React.Component {
+export default class Tree extends React.Component {
 
   template(children, parent){
     var {...other} = this.props
@@ -88,11 +88,10 @@ export class Tree extends React.Component {
   }
 
   render() {
-    //if(this.props.treeTemplate){
-    //  return this.props.treeTemplate.call(this, this.props.items, this.props.parent)
-    //} else {
-    //  return this.template(this.props.items, this.props.parent)
-    //}
-    <div>Test</div>
+    if(this.props.treeTemplate){
+     return this.props.treeTemplate.call(this, this.props.items, this.props.parent)
+    } else {
+     return this.template(this.props.items, this.props.parent)
+    }
   }
 }

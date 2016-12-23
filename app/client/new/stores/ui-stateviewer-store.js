@@ -36,6 +36,17 @@ class UIStateViewerStore {
     }))
   }
 
+  convertStateToTree(state) {
+    return Object.keys(state).reduce((acc, key) => {
+      let value = state[key]
+      if (!value || key === 'app' || typeof value !== 'object') {
+        return {...acc, [key]: value}
+      } else {
+        return {...acc, [key]: this.convertStateToTree(value)}
+      }
+    }, {})
+  }
+
 }
 
 export default UIStateViewerStore
