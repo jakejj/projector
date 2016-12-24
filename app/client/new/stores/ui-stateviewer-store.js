@@ -4,9 +4,10 @@ import _ from 'lodash'
 
 class UIStateViewerStore {
   @observable appState
-  @observable editingItems
-  @observable expandedItems
-  @observable loadingChildrenItems
+  @observable editingItems = []
+  @observable expandedItems = []
+  @observable loadingChildrenItems = []
+  @observable app
 
   constructor(app){
     this.app = app
@@ -21,7 +22,6 @@ class UIStateViewerStore {
   }
 
   @action onExpand = (item)=>{
-    this.startLoadingChildren(item)
     this.expandedItems.push(item)
   }
 
@@ -36,20 +36,30 @@ class UIStateViewerStore {
     }))
   }
 
-  convertStateToTree(state) {
-    return Object.keys(state).reduce((acc, key) => {
-      let value = state[key]
-      if (!value || key === 'app' || typeof value !== 'object') {
-        if(key === 'app' || key === 'api'){
-          return acc
-        } else {
-          return {...acc, [key]: value}
-        }
+  @computed get appState() {
+    return Object.keys(this.app).reduce((acc, key) => {
+      if (this.app[key].serialize) {
+        return {...acc, [key]: JSON.parse(this.app[key].serialize)}
       } else {
-        return {...acc, [key]: this.convertStateToTree(value)}
+        return acc
       }
     }, {})
   }
+
+  // convertStateToTree(state) {
+  //   return Object.keys(state).reduce((acc, key) => {
+  //     let value = state[key]
+  //     if (!value || key === 'app' || typeof value !== 'object') {
+  //       if(key === 'app' || key === 'api'){
+  //         return acc
+  //       } else {
+  //         return {...acc, [key]: value}
+  //       }
+  //     } else {
+  //       return {...acc, [key]: this.convertStateToTree(value)}
+  //     }
+  //   }, {})
+  // }
 
 }
 

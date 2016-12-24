@@ -32,7 +32,13 @@ class Branch extends React.Component {
   }
 
   renderChildren(item, children, otherProps){
-    return this.isExpanded(item) && children && children.length > 0 ? <Tree {...otherProps} items={children} parent={item} /> : undefined
+    if (!this.isExpanded(item)) {
+      return undefined
+    }
+    if (children && (children.length > 0 || typeof children === 'object')) {
+      return  <Tree {...otherProps} items={children} parent={item} />
+    }
+    return `${children}`
   }
 
   render() {
@@ -78,6 +84,11 @@ export default class Tree extends React.Component {
 
   template(children, parent){
     var {...other} = this.props
+    if (typeof children === 'object') {
+      children = Object.keys(children).map((key, index) => {
+        return {children: children[key], name: key, id: index}
+      })
+    }
     return(
       <ul className="tree" style={{listStyleType: 'none'}}>{children.map((child)=>{
         return(

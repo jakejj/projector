@@ -17,6 +17,11 @@ export default class ProjectStore {
     this.loadedRequests = []
   }
 
+  @computed get serialize() {
+    let { app, api, ...rest } = this
+    return JSON.stringify(rest)
+  }
+
 
   @action('addProject') add(model){
     //let existingModel = this.projects.get(model.id)
