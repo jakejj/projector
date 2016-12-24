@@ -10,6 +10,7 @@ MutationType = GraphQL::ObjectType.define do
   #    project
   #  }
   #end
-  
+
   field :createProject, field: CreateProjectMutation.field
+  field :updateProject, field: UpdateProjectMutation.field
 end

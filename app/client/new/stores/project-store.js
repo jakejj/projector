@@ -94,7 +94,6 @@ export default class ProjectStore {
     let options
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
-
     let cached = this.app.gqlStore.checkQueryCache(requests)
     if(!cached){ return null }
 
@@ -150,7 +149,10 @@ export default class ProjectStore {
     return app.gqlStore.mutateData(this.app, gql, {name: name})
   }
 
-
+  updateProject({name, id} = {}){
+    let gql = 'mutation updateProject($name: String!, $id: ID!){updateProject(input: {name: $name, id: $id}){ project{ id, name, createdAt } }}'
+    return app.gqlStore.mutateData(this.app, gql, {name: name, id: id})
+  }
 
 
 

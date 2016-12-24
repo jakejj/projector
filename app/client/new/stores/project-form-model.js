@@ -56,7 +56,19 @@ export default class ProjectFormModel {
   }
 
   update(){
-    console.log('updating')
+    this.saving = true
+    return this.app.projectStore.updateProject({name: this.name, id: this.id})
+    .then((status) => {
+      this.saving = false
+      if (status.success) {
+        this.saved = true
+        this.app.uiMessageStore.add('Project Updated', 'success')
+        this.reset()
+      } else {
+        this.app.uiMessageStore.add('Server Error', 'error')
+      }
+      return status
+    })
   }
 
 

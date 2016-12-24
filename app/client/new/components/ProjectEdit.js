@@ -41,7 +41,6 @@ class ProjectEdit extends React.Component {
 
   render(){
     let project = this.props.projectStore.get(...this.query())
-    
     return(
       <Loader container={this} params={this.props.params} query={this.query.bind(this)} >
         {!project ? <Loading /> :
@@ -57,7 +56,6 @@ class ProjectEdit extends React.Component {
 
 
 const ProjectEditForm = observer((props) => {
-  console.log(props.project)
   if(props.viewModel.saving){ return(<Loading />) }
   return(
     <form onSubmit={props.handleSubmit}>
