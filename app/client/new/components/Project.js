@@ -37,7 +37,12 @@ const Project = observer((props) => {
         </Col>
       </Row>
       <Row>
-        <Link to={`/new/projects/${project.id}/edit`} className="btn btn-default">Edit</Link>
+        <Col md={2}>
+          <Link to={`/new/projects/${project.id}/edit`} className="btn btn-default">Edit</Link>
+        </Col>
+        <Col md={2}>
+          <Link to={`/new/projects/${project.id}/delete`} className="btn btn-default">Delete</Link>
+        </Col>
       </Row>
       <Row>
         <Col md={12}>

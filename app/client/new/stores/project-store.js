@@ -154,6 +154,15 @@ export default class ProjectStore {
     return app.gqlStore.mutateData(this.app, gql, {name: name, id: id})
   }
 
+  delete({id} = {}){
+    let gql = 'mutation delete($id: ID!, $type: String!){delete(input: {id: $id, type: $type}){ type, id }}'
+    return app.gqlStore.deleteData(this.app, gql, {id: id, type: 'Project'})
+  }
+
+  _delete(id) {
+    this.projects.delete(id)
+  }
+
 
 
 

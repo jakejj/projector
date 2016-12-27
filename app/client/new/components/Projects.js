@@ -6,7 +6,7 @@ import ProjectList from './ProjectList'
 import Project from './Project'
 import ProjectNew from './ProjectNew'
 import ProjectEdit from './ProjectEdit'
-
+import ProjectDelete from './ProjectDelete'
 
 class Projects extends React.Component {
   render(){
@@ -22,6 +22,7 @@ class Projects extends React.Component {
             <div>
               <Match pattern={`${pathname}/new`} component={ProjectNew} />
               <Match pattern={`${pathname}/:projectId/edit`} component={ProjectEdit} />
+              <Match pattern={`${pathname}/:projectId/delete`} component={ProjectDelete} />
               <Miss render={() => matchProps.params.projectId !== 'new'
                 ? <Project {...matchProps}/>
                 : null }/>

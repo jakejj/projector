@@ -33,6 +33,22 @@ export default class GqlStore {
     })
   }
 
+  deleteData(app, gqlMutation, variables) {
+    let resultPromise = this.executeGqlQuery(app.api, app.gqlUrl, gqlMutation, variables)
+    return resultPromise.then((results)=>{
+      if (!results.errors) {
+        this.deleteStoreData(app, variables.type, variables.id)
+        return {success: true}
+      }
+      return results
+    })
+  }
+
+  deleteStoreData(app, type, id) {
+    let storeName = singularize(type).toLowerCase() + 'Store'
+    app[storeName]._delete(id)
+  }
+
 
   parseGqlQueryResultsHelper(app, data){
     Object.keys(data).forEach((key)=>{

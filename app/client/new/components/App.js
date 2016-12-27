@@ -31,7 +31,7 @@ class App extends React.Component {
               <Messages />
             </div>
             <div id="projector-app-content">
-              
+
               { this.props.children }
               <Match pattern="/new/projects" component={Projects} />
             </div>
