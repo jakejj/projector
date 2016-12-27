@@ -41,7 +41,7 @@ export default class ProjectFormModel {
 
   create(){
     this.saving = true
-    return this.app.projectStore.createProject({name: this.name})
+    return this.app.projectStore.create({name: this.name})
     .then((status) => {
       this.saving = false
       if (status.success) {
@@ -57,7 +57,7 @@ export default class ProjectFormModel {
 
   update(){
     this.saving = true
-    return this.app.projectStore.updateProject({name: this.name, id: this.id})
+    return this.app.projectStore.update({name: this.name, id: this.id})
     .then((status) => {
       this.saving = false
       if (status.success) {

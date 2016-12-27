@@ -27,7 +27,7 @@ export default class ProjectNewFormModel {
 
   save(){
     this.saving = true
-    return this.app.projectStore.createProject({name: this.name})
+    return this.app.projectStore.create({name: this.name})
     .then((status) => {
       this.saving = false
       if (status.success) {
