@@ -21,8 +21,9 @@ export default class ProjectStore extends mix(Object).with(StoreMixin, GqlStoreM
   }
 
   @computed get serialize() {
-    let { app, modelTypeName, createGql, updateGql, ...rest } = this
-    return JSON.stringify(rest)
+    //let { app, modelTypeName, createGql, updateGql, ...props } = this
+    let props = {models: this.models}
+    return JSON.stringify(props)
   }
 
 }
