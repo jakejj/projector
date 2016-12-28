@@ -4,12 +4,20 @@ import R from 'Ramda'
 import pluralizeLib from 'pluralize'
 window.p = pluralizeLib
 
+
+export const pluralize = (str)=>{ return pluralizeLib.plural(str) }
+export const singularize = (str)=>{ return pluralizeLib(str, 1) }
+
+
+
+
 export const camelizeObject = (object) => {
   return Object.keys(object).reduce((newObject, key) => {
     newObject[camelCase(key)] = object[key]
     return newObject
   }, {})
 }
+
 
 export const decamelizeObject = (object) => {
   return Object.keys(object).reduce((newObject, key) => {
@@ -18,12 +26,14 @@ export const decamelizeObject = (object) => {
   }, {})
 }
 
+
+
+
 export const isPromise = (object) => {
   return typeof object.then == 'function'
 }
 
-export const pluralize = (str)=>{ return pluralizeLib.plural(str) }
-export const singularize = (str)=>{ return pluralizeLib(str, 1) }
+
 
 
 export const inGroupsOf = function(array, number, fillWith=null) {
@@ -39,6 +49,7 @@ export const inGroupsOf = function(array, number, fillWith=null) {
    }
    return slices;
 };
+
 
 
 
@@ -109,3 +120,16 @@ export function compareArrays(array1, array2) {
 }
 
 
+
+
+export const mix = (superclass) => new MixinBuilder(superclass);
+
+class MixinBuilder {  
+  constructor(superclass) {
+    this.superclass = superclass;
+  }
+
+  with(...mixins) { 
+    return mixins.reduce((c, mixin) => mixin(c), this.superclass);
+  }
+}

@@ -1,3 +1,5 @@
+//@observable listLoaded = false
+//
 //function makeUrlQueryString(query){
 //  query = decamelizeObject(query)
 //  if(Object.keys(query).length == 0){ return '' }
