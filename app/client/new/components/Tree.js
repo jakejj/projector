@@ -35,10 +35,10 @@ class Branch extends React.Component {
     if (!this.isExpanded(item)) {
       return undefined
     }
-    if (children && (children.length > 0 || typeof children === 'object')) {
+    if (children && ((children.map && children.length > 0) || typeof children === 'object')) {
       return  <Tree {...otherProps} items={children} parent={item} />
     }
-    return `${children}`
+    return <div>{children}</div>
   }
 
   render() {

@@ -34,7 +34,7 @@ class StateViewer extends React.Component {
 
   render(){
     return(
-      <div style={{position: "relative", right: 0, width: "100px", height: '100%'}}>
+      <div style={{position: "fixed", right: 0, width: "300px", height: '100%', zIndex: '1000', overflow: 'auto'}}>
         <Tree items={this.viewModel.appState}
              onExpand={this.viewModel.onExpand}
              onContract={this.viewModel.onContract}
