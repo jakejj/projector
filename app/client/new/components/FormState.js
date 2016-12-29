@@ -15,6 +15,7 @@ export class FormState extends React.Component {
 
   handleChange(e){
     this.props.viewModel[e.target.name] = e.target.value
+    this.props.viewModel.changedField(e.target.name)
   }
 
   render(){

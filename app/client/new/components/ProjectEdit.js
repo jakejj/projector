@@ -9,25 +9,6 @@ import Loader from './Loader'
 import { Redirect } from 'react-router'
 
 
-//@inject('projectStore') @observer
-//class ProjectLoader extends React.Component {
-//
-//  query(){
-//    return ['Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt']]
-//  }
-//
-//  render(){
-//    let project = this.props.projectStore.get(...this.query())
-//
-//    return(
-//      <Loader container={this} params={this.props.params} query={this.query.bind(this)} >
-//        <Project project={project} />
-//      </Loader>
-//    )
-//  }
-//
-//}
-
 @inject('uiFormStore', 'uiMessageStore', 'projectStore') @observer
 class ProjectEdit extends React.Component {
 
@@ -56,11 +37,10 @@ class ProjectEdit extends React.Component {
 
 
 const ProjectEditForm = observer((props) => {
-//console.log(props.viewModel.saving)
   if(props.viewModel.saving){ return(<Loading />) }
   return(
     <form onSubmit={props.handleSubmit}>
-      <FormGroup controlId="formProject">
+      <FormGroup controlId="formProject" validationState={props.viewModel.validationStatus('name')}>
         <ControlLabel>Edit Project</ControlLabel>
         <FormControl
           name='name'

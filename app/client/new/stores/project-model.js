@@ -3,7 +3,7 @@ import _ from 'lodash'
 import { camelizeObject, decamelizeObject } from '../../utils/utils';
 
 
-export default class ProjectModel {
+class ProjectModel {
   @observable name
   @observable createdAt
   @observable updatedAt
@@ -29,3 +29,28 @@ export default class ProjectModel {
   }
 
 }
+
+
+ProjectModel.validate = function validate(fieldName, value){
+  switch(fieldName){
+    case 'name': 
+      return validatePresence(value)
+    default:
+      return true
+  }
+}
+
+
+function validatePresence(value){
+  if(typeof value === 'string'){
+    if(value.length > 0){ return true }
+  } else if(typeof value === 'number'){
+    return true
+  } else if(typeof value === 'object'){
+    return true
+  }
+  return false
+}
+
+
+export default ProjectModel
