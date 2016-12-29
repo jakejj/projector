@@ -56,6 +56,7 @@ class ProjectEdit extends React.Component {
 
 
 const ProjectEditForm = observer((props) => {
+//console.log(props.viewModel.saving)
   if(props.viewModel.saving){ return(<Loading />) }
   return(
     <form onSubmit={props.handleSubmit}>

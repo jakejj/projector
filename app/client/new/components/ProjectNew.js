@@ -1,16 +1,17 @@
 import React from 'react'
 import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
-import ProjectNewFormModel from '../stores/project-new-form-model'
+import ProjectFormModel from '../stores/project-form-model'
 import FormState from './FormState'
 import Loading from './Loading'
 import { Redirect } from 'react-router'
+
 
 @inject('uiFormStore', 'uiMessageStore') @observer
 class ProjectNew extends React.Component {
 
   getViewModel() {
-    return this.props.uiFormStore.use('projectNewForm', ProjectNewFormModel)
+    return this.props.uiFormStore.use('projectNewForm', ProjectFormModel)
   }
 
   render(){
