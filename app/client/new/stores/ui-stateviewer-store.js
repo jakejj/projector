@@ -54,8 +54,9 @@ export default UIStateViewerStore
 
 
 export function convertStateToTree(state) {
-  return Object.keys(state).reduce((acc, key) => {
-    let value = state[key]
+  let keys = state.keys ? state.keys() : Object.keys(state)
+  return keys.reduce((acc, key) => {
+    let value = state.keys ? state.get(key) : state[key]
     if (!value || key === 'app' || typeof value !== 'object') {
       if(key === 'app' || key === 'api'){
         return acc
