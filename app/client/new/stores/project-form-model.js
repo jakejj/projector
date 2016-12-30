@@ -3,6 +3,30 @@ import { mix } from '../../utils/utils'
 import FormViewModelMixin from './form-view-model-mixin'
 import ProjectModel from './project-model'
 
+import { validate } from 'validate.js'
+
+let conditions = {username: {
+  presence: true,
+  exclusion: {
+    within: ["nicklas"],
+    message: "'%{value}' is not allowed"
+  }
+}}
+
+let conditions2 = {
+    presence: {
+      presence: true,
+      message: "'%{value}' must be filled in"
+    },
+    exclusion: {
+      within: ["nicklas"],
+      message: "'%{value}' is not allowed"
+    }
+}
+
+//console.log(validate({username: 'nicklas'}, conditions))
+//console.log(validate.single('nicklas', conditions2))
+//console.log(validate)
 
 export default class ProjectFormModel extends mix(Object).with(FormViewModelMixin) {
 
