@@ -45,6 +45,7 @@ let GqlStoreMixin = (superclass) => class extends superclass {
 
   update({name, id} = {}){
     let gql = this.updateGql
+    console.log("gql", gql);
     return app.gqlStore.mutateData(this.app, gql, {name: name, id: id})
   }
 

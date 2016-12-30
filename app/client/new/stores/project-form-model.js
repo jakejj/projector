@@ -9,7 +9,7 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
   modelClass = ProjectModel
 
   viewModelProperties = {
-    saving: false, 
+    saving: false,
     saved: false
   }
 
@@ -41,6 +41,7 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
   }
 
   isValid(){
+    return true
     Object.keys(this.formProperties).reduce((valid, formProperty)=>{
       if(!this.isFieldValid(formProperty)){
         valid = false
@@ -55,6 +56,7 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
     super(...arguments)
     this.app = app
     this.initialValues = values
+    this._model = this.initialValues
     this.setup()
   }
 
@@ -62,10 +64,10 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
   save(){
     if(this.isValid()){
       super.save({
-        store: this.app.projectStore, 
-        createSuccessMessage: 'Project Created', 
+        store: this.app.projectStore,
+        createSuccessMessage: 'Project Created',
         createErrorMessage: 'Server Error Creating Project',
-        updateSuccessMessage: 'Project Updated', 
+        updateSuccessMessage: 'Project Updated',
         updateErrorMessage: 'Server Error Updating Project',
       })
     }

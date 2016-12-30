@@ -1,6 +1,5 @@
 import React from 'react'
 import { Grid, Row, Col } from 'react-bootstrap'
-//import { withRouter } from 'react-router'
 import { BrowserRouter, Match, Miss, Link } from 'react-router'
 import { Provider } from 'mobx-react'
 import DevTools from 'mobx-react-devtools';
@@ -24,7 +23,6 @@ class App extends React.Component {
 
 
             <DevTools hightlightTimeout={60000} position={{ bottom: 0, right: 0 }} />
-            <StateViewer state={app} />
 
 
             <div id="projector-app-header">
@@ -43,6 +41,6 @@ class App extends React.Component {
 
 }
 
+// <StateViewer state={app} />
 
-//export default withRouter(App)
 export default App

@@ -18,7 +18,13 @@ let FormViewModelMixin = (superclass) => class extends superclass {
 
 
   @action('resetForm') reset() {
-    this.setup()
+    Object.keys(this.viewModelProperties).forEach((key) => {
+      this[key] = this.viewModelProperties[key]
+    })
+    Object.keys(this.formProperties).forEach((key) => {
+      this[key] = this.formProperties[key]
+    })
+    this.set(this.initialValues)
   }
 
 
