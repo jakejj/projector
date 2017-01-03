@@ -6,6 +6,7 @@ let FormViewModelMixin = (superclass) => class extends superclass {
   setup(){
     extendObservable(this, this.viewModelProperties)
     extendObservable(this, this.formProperties)
+    //extendObservable(this, extractFormPropertyValues(this.formProperties))
     this.set(this.initialValues)
   }
 
@@ -69,6 +70,24 @@ let FormViewModelMixin = (superclass) => class extends superclass {
   }
 
 }
+
+//function extractFormPropertyValues(formProperties){
+//  return Object.keys(formProperties).map((key)=>{
+//    let prop = formProperties[key]
+//    if(typeof prop === 'function'){
+//      prop = prop()
+//    }
+//    if(typeof prop === 'object' && prop !== null){
+//      if(prop.default){
+//        return prop.default
+//      } else {
+//        return null
+//      }
+//    } else {
+//      return prop
+//    }
+//  })
+//}
 
 
 export default FormViewModelMixin

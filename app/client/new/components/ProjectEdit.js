@@ -42,6 +42,10 @@ const ProjectEditForm = observer((props) => {
     <form onSubmit={props.handleSubmit}>
       <FormGroup controlId="formProject" validationState={props.viewModel.validationStatus('name')}>
         <ControlLabel>Edit Project</ControlLabel>
+        {()=>{
+          let em = props.viewModel.validationMessages['name']
+          return em ? <div>{em}</div> : null
+        }()}
         <FormControl
           name='name'
           type="text"
