@@ -16,7 +16,7 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
       saved: false,
       validationStatuses: {}
     }
-    this.fieldProps = ProjectModel.properties
+    this.fieldProps = ProjectModel.props
     this.validations = ProjectModel.validations
 
     this.setup(values)

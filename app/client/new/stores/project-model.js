@@ -31,7 +31,7 @@ class ProjectModel {
 }
 
 
-ProjectModel.properties = {
+ProjectModel.props = {
   id: null,
   name: ''
 }

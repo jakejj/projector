@@ -23,7 +23,7 @@ let FormViewModelMixin = (superclass) => class extends superclass {
     })
   }
 
-  @action('resetForm') reset() {
+  @action('resetForm') reset(){
     this.setup()
   }
 

@@ -57,6 +57,7 @@ const ProjectEditForm = observer((props) => {
       <div>{props.viewModel.fields.name}</div>
       <FormGroup controlId="formProject">
         <Button type="submit">Update Project</Button>
+        <Button onClick={props.handleReset}>Reset</Button>
       </FormGroup>
     </form>
   )
