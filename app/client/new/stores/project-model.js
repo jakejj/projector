@@ -1,15 +1,18 @@
 import { action, computed, observable } from 'mobx'
 import _ from 'lodash'
 import { camelizeObject, decamelizeObject } from '../../utils/utils';
+import { mix } from '../../utils/utils'
+import SerializableModelMixin from './serializable-model-mixin'
 
 
-class ProjectModel {
+class ProjectModel extends mix(Object).with(SerializableModelMixin) {
   @observable name
   @observable createdAt
   @observable updatedAt
   @observable completedAt
 
   constructor(app, values={}){
+    super(...arguments)
     this.app = app
     
     this.setValues(this, values)
@@ -30,10 +33,16 @@ class ProjectModel {
 
 }
 
+window.ProjectModel = ProjectModel
+
 
 ProjectModel.props = {
   id: null,
   name: ''
+}
+
+ProjectModel.propTypes = {
+  id: 'int'
 }
 
 ProjectModel.validations = {
