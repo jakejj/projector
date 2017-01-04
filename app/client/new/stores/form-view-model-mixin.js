@@ -23,20 +23,15 @@ let FormViewModelMixin = (superclass) => class extends superclass {
     })
   }
 
-<<<<<<< HEAD
 
   @action('resetForm') reset() {
-    Object.keys(this.viewModelProperties).forEach((key) => {
-      this[key] = this.viewModelProperties[key]
+    Object.keys(this.formProps).forEach((key) => {
+      this[key] = this.formProps[key]
     })
-    Object.keys(this.formProperties).forEach((key) => {
-      this[key] = this.formProperties[key]
+    Object.keys(this.fieldProps).forEach((key) => {
+      this[key] = this.fieldProps[key]
     })
     this.set(this.initialValues)
-=======
-  @action('resetForm') reset(){
-    this.setup()
->>>>>>> refs/heads/validations
   }
 
 
