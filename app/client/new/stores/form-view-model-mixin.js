@@ -1,4 +1,5 @@
 import { action, computed, observable, extendObservable } from 'mobx'
+import _ from 'lodash'
 
 
 let FormViewModelMixin = (superclass) => class extends superclass {
@@ -8,10 +9,10 @@ let FormViewModelMixin = (superclass) => class extends superclass {
       this.initialValues = initialValues
     }
     
-    extendObservable(this, this.formProps)
+    extendObservable(this, _.cloneDeep(this.formProps))
 
     extendObservable(this, {fields: {}})
-    extendObservable(this.fields, this.fieldProps)
+    extendObservable(this.fields, _.cloneDeep(this.fieldProps))
     
     this.set(this.initialValues)
   }
@@ -26,10 +27,10 @@ let FormViewModelMixin = (superclass) => class extends superclass {
 
   @action('resetForm') reset() {
     Object.keys(this.formProps).forEach((key) => {
-      this[key] = this.formProps[key]
+      this[key] = _.cloneDeep(this.formProps[key])
     })
     Object.keys(this.fieldProps).forEach((key) => {
-      this[key] = this.fieldProps[key]
+      this.fields[key] = _.cloneDeep(this.fieldProps[key])
     })
     this.set(this.initialValues)
   }
