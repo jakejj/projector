@@ -31,25 +31,19 @@ class ProjectModel {
 }
 
 
-ProjectModel.validate = function validate(fieldName, value){
-  switch(fieldName){
-    case 'name': 
-      return validatePresence(value)
-    default:
-      return true
-  }
+ProjectModel.props = {
+  id: null,
+  name: ''
 }
 
-
-function validatePresence(value){
-  if(typeof value === 'string'){
-    if(value.length > 0){ return true }
-  } else if(typeof value === 'number'){
-    return true
-  } else if(typeof value === 'object'){
-    return true
+ProjectModel.validations = {
+  name: {
+    presence: true,
+    exclusion: {
+      within: ["nicklas"],
+      message: "'%{value}' is not allowed"
+    }
   }
-  return false
 }
 
 

@@ -40,19 +40,24 @@ const ProjectEditForm = observer((props) => {
   if(props.viewModel.saving){ return(<Loading />) }
   return(
     <form onSubmit={props.handleSubmit}>
-      <FormGroup controlId="formProject" validationState={props.viewModel.validationStatus('name')}>
+      <FormGroup controlId="formProject" validationState={props.viewModel.validationStatusFor('name')}>
         <ControlLabel>Edit Project</ControlLabel>
+        {()=>{
+          let em = props.viewModel.validationMessagesFor('name')
+          return em ? <div>{em}</div> : null
+        }()}
         <FormControl
           name='name'
           type="text"
           placeholder="Project Name"
-          value={props.viewModel.name}
+          value={props.viewModel.fields.name}
           onChange={props.handleChange}
         />
       </FormGroup>
-      <div>{props.viewModel.name}</div>
+      <div>{props.viewModel.fields.name}</div>
       <FormGroup controlId="formProject">
         <Button type="submit">Update Project</Button>
+        <Button onClick={props.handleReset}>Reset</Button>
       </FormGroup>
     </form>
   )

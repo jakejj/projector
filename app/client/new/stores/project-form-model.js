@@ -1,63 +1,25 @@
 import { action, computed, observable, extendObservable, autorun } from 'mobx'
 import { mix } from '../../utils/utils'
 import FormViewModelMixin from './form-view-model-mixin'
+import FormValidationMixin from './form-validation-mixin'
 import ProjectModel from './project-model'
 
 
-export default class ProjectFormModel extends mix(Object).with(FormViewModelMixin) {
-
-  modelClass = ProjectModel
-
-  viewModelProperties = {
-    saving: false,
-    saved: false
-  }
-
-  formProperties = {
-    id: null,
-    name: ''
-  }
-
-
-  validationStatus(fieldName){
-    if(this.changedFields[fieldName]){
-      if(this.isFieldValid(fieldName)){
-        return 'success'
-      }
-      return 'error'
-    }
-    return null
-  }
-
-  changedFields = {}
-
-  changedField(fieldName){
-    console.log(fieldName)
-    this.changedFields[fieldName] = true
-  }
-
-  isFieldValid(fieldName){
-    return this.modelClass.validate(fieldName, this[fieldName])
-  }
-
-  isValid(){
-    return true
-    Object.keys(this.formProperties).reduce((valid, formProperty)=>{
-      if(!this.isFieldValid(formProperty)){
-        valid = false
-      }
-      return valid
-    }, true)
-  }
-
-
+export default class ProjectFormModel extends mix(Object).with(FormViewModelMixin, FormValidationMixin) {
 
   constructor(app, values={}){
     super(...arguments)
     this.app = app
-    this.initialValues = values
-    this._model = this.initialValues
-    this.setup()
+
+    this.formProps = {
+      saving: false, 
+      saved: false,
+      validationStatuses: {}
+    }
+    this.fieldProps = ProjectModel.props
+    this.validations = ProjectModel.validations
+
+    this.setup(values)
   }
 
 

@@ -8,20 +8,30 @@ export class FormState extends React.Component {
     //TODO: Create flag to tell viewModel to destroy itself
   }
 
+
+  handleChange(e){
+    this.props.viewModel.fields[e.target.name] = e.target.value
+    this.props.viewModel.changedField(e.target.name)
+  }
+
+
   handleSubmit(e){
     e.preventDefault()
     this.props.viewModel.save()
   }
 
-  handleChange(e){
-    this.props.viewModel[e.target.name] = e.target.value
-    this.props.viewModel.changedField(e.target.name)
+
+  handleReset(e){
+    e.preventDefault()
+    this.props.viewModel.reset()
   }
+
 
   render(){
     return React.cloneElement(this.props.children, {
       handleChange: this.handleChange.bind(this),
       handleSubmit: this.handleSubmit.bind(this),
+      handleReset: this.handleReset.bind(this),
       viewModel: this.props.viewModel
     })
   }

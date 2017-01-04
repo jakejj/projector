@@ -3,19 +3,27 @@ import { action, computed, observable, extendObservable } from 'mobx'
 
 let FormViewModelMixin = (superclass) => class extends superclass {
 
-  setup(){
-    extendObservable(this, this.viewModelProperties)
-    extendObservable(this, this.formProperties)
+  setup(initialValues=null){
+    if(initialValues){
+      this.initialValues = initialValues
+    }
+    
+    extendObservable(this, this.formProps)
+
+    extendObservable(this, {fields: {}})
+    extendObservable(this.fields, this.fieldProps)
+    
     this.set(this.initialValues)
   }
 
 
   @action('setForm') set(values){
     Object.keys(values).forEach((key)=>{
-      this[key] = values[key]
+      this.fields[key] = values[key]
     })
   }
 
+<<<<<<< HEAD
 
   @action('resetForm') reset() {
     Object.keys(this.viewModelProperties).forEach((key) => {
@@ -25,11 +33,15 @@ let FormViewModelMixin = (superclass) => class extends superclass {
       this[key] = this.formProperties[key]
     })
     this.set(this.initialValues)
+=======
+  @action('resetForm') reset(){
+    this.setup()
+>>>>>>> refs/heads/validations
   }
 
 
   save(args){
-    if(this.id){
+    if(this.fields.id){
       this.update(args)
     } else {
       this.create(args)
@@ -68,8 +80,8 @@ let FormViewModelMixin = (superclass) => class extends superclass {
 
 
   _getFormValues(){
-    return Object.keys(this.formProperties).reduce((acc, key)=>{
-      acc[key] = this[key]
+    return Object.keys(this.fieldProps).reduce((acc, key)=>{
+      acc[key] = this.fields[key]
       return acc
     }, {})
   }

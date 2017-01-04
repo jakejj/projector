@@ -1,5 +1,4 @@
 import mobx, { action, computed, observable } from 'mobx'
-//import _ from 'lodash'
 import { mix } from '../../utils/utils'
 import StoreMixin from './store-mixin'
 import GqlStoreMixin from './gql-store-mixin'
@@ -21,7 +20,6 @@ export default class ProjectStore extends mix(Object).with(StoreMixin, GqlStoreM
   }
 
   @computed get serialize() {
-    //let { app, modelTypeName, createGql, updateGql, ...props } = this
     let props = {models: this.models}
     return JSON.stringify(props)
   }
