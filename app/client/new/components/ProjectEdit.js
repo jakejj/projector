@@ -50,11 +50,11 @@ const ProjectEditForm = observer((props) => {
           name='name'
           type="text"
           placeholder="Project Name"
-          value={props.viewModel.name}
+          value={props.viewModel.fields.name}
           onChange={props.handleChange}
         />
       </FormGroup>
-      <div>{props.viewModel.name}</div>
+      <div>{props.viewModel.fields.name}</div>
       <FormGroup controlId="formProject">
         <Button type="submit">Update Project</Button>
       </FormGroup>

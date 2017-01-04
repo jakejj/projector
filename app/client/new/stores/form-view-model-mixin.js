@@ -3,20 +3,25 @@ import { action, computed, observable, extendObservable } from 'mobx'
 
 let FormViewModelMixin = (superclass) => class extends superclass {
 
-  setup(){
-    extendObservable(this, this.viewModelProperties)
-    extendObservable(this, this.formProperties)
-    //extendObservable(this, extractFormPropertyValues(this.formProperties))
+  setup(initialValues=null){
+    if(initialValues){
+      this.initialValues = initialValues
+    }
+    
+    extendObservable(this, this.formProps)
+
+    extendObservable(this, {fields: {}})
+    extendObservable(this.fields, this.fieldProps)
+    
     this.set(this.initialValues)
   }
 
 
   @action('setForm') set(values){
     Object.keys(values).forEach((key)=>{
-      this[key] = values[key]
+      this.fields[key] = values[key]
     })
   }
-
 
   @action('resetForm') reset() {
     this.setup()
@@ -24,7 +29,7 @@ let FormViewModelMixin = (superclass) => class extends superclass {
 
 
   save(args){
-    if(this.id){
+    if(this.fields.id){
       this.update(args)
     } else {
       this.create(args)
@@ -63,31 +68,13 @@ let FormViewModelMixin = (superclass) => class extends superclass {
 
 
   _getFormValues(){
-    return Object.keys(this.formProperties).reduce((acc, key)=>{
-      acc[key] = this[key]
+    return Object.keys(this.fieldProps).reduce((acc, key)=>{
+      acc[key] = this.fields[key]
       return acc
     }, {})
   }
 
 }
-
-//function extractFormPropertyValues(formProperties){
-//  return Object.keys(formProperties).map((key)=>{
-//    let prop = formProperties[key]
-//    if(typeof prop === 'function'){
-//      prop = prop()
-//    }
-//    if(typeof prop === 'object' && prop !== null){
-//      if(prop.default){
-//        return prop.default
-//      } else {
-//        return null
-//      }
-//    } else {
-//      return prop
-//    }
-//  })
-//}
 
 
 export default FormViewModelMixin
