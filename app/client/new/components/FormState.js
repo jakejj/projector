@@ -4,26 +4,35 @@ import React from 'react'
 //have properties matching the name property of the form inputs.
 export class FormState extends React.Component {
 
+  constructor(props) {
+    super(props)
+    this.viewModel = props.getViewModel()
+  }
+
+  componentWillReceiveProps(props) {
+    this.viewModel = props.getViewModel()
+  }
+
   componentWillUnmount(){
     //TODO: Create flag to tell viewModel to destroy itself
   }
 
 
   handleChange(e){
-    this.props.viewModel.fields[e.target.name] = e.target.value
-    this.props.viewModel.changedField(e.target.name)
+    this.viewModel.fields[e.target.name] = e.target.value
+    this.viewModel.changedField(e.target.name)
   }
 
 
   handleSubmit(e){
     e.preventDefault()
-    this.props.viewModel.save()
+    this.viewModel.save()
   }
 
 
   handleReset(e){
     e.preventDefault()
-    this.props.viewModel.reset()
+    this.viewModel.reset()
   }
 
 
@@ -32,7 +41,7 @@ export class FormState extends React.Component {
       handleChange: this.handleChange.bind(this),
       handleSubmit: this.handleSubmit.bind(this),
       handleReset: this.handleReset.bind(this),
-      viewModel: this.props.viewModel
+      viewModel: this.viewModel
     })
   }
 

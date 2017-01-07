@@ -15,15 +15,15 @@ export default class UIFormStore {
     return JSON.stringify(convertStateToTree(props))
   }
 
-  @action('CreateForm') create(key, type, model=null){
-    let viewModel = new type(app, model)
+  @action('CreateForm') create(key, type, modelOrGetModel=null){
+    let viewModel = new type(app, modelOrGetModel)
     this.forms.set(key, viewModel)
     return viewModel
   }
 
-  use(key, type, model={}){
+  use(key, type, modelOrGetModel){
     let viewModel = this.get(key)
-    return viewModel && viewModel._model == model ? viewModel : this.create(key, type, model)
+    return viewModel ? viewModel : this.create(key, type, modelOrGetModel)
   }
 
   get(key){

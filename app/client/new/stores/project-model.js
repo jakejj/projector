@@ -1,6 +1,6 @@
 import { action, computed, observable } from 'mobx'
 import _ from 'lodash'
-import { camelizeObject, decamelizeObject } from '../../utils/utils';
+// import { camelizeObject, decamelizeObject } from '../../utils/utils';
 import { mix } from '../../utils/utils'
 import SerializableModelMixin from './serializable-model-mixin'
 
@@ -14,19 +14,19 @@ class ProjectModel extends mix(Object).with(SerializableModelMixin) {
   constructor(app, values={}){
     super(...arguments)
     this.app = app
-    
+
     this.setValues(this, values)
     return this
   }
 
   @action setValues(self, values){
     values = camelizeObject(values)
-    _.mapKeys(values, (value, key)=>{ 
+    _.mapKeys(values, (value, key)=>{
       self[key] = value
     })
   }
 
-  update(values){
+  @action('update') update(values){
     this.setValues(this, values)
     return this.app.ProjectsStore.update(this)
   }

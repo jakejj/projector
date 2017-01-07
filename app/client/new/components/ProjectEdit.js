@@ -16,16 +16,20 @@ class ProjectEdit extends React.Component {
     return ['Project', { id: this.props.params.projectId }, ['id', 'name', 'createdAt']]
   }
 
+  getModel() {
+    return this.props.projectStore.get(...this.query())
+  }
+
   getViewModel(model){
-    return this.props.uiFormStore.use('projectEditForm', ProjectFormModel, model)
+    return this.props.uiFormStore.use('projectEditForm' + this.props.params.projectId, ProjectFormModel, this.getModel.bind(this))
   }
 
   render(){
-    let project = this.props.projectStore.get(...this.query())
+    let project = this.getModel()
     return(
       <Loader container={this} params={this.props.params} query={this.query.bind(this)} >
         {!project ? <Loading /> :
-          <FormState viewModel={this.getViewModel(project)}>
+          <FormState getViewModel={this.getViewModel.bind(this)} >
             <ProjectEditForm project={project} />
           </FormState >
         }

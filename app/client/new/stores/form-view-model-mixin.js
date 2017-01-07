@@ -5,23 +5,27 @@ import _ from 'lodash'
 let FormViewModelMixin = (superclass) => class extends superclass {
 
   setup(initialValues=null){
-    if(initialValues){
-      this.initialValues = initialValues
-    }
-    
+
+    this.initialValues = initialValues
+
     extendObservable(this, _.cloneDeep(this.formProps))
 
     extendObservable(this, {fields: {}})
     extendObservable(this.fields, _.cloneDeep(this.fieldProps))
-    
+
     this.set(this.initialValues)
   }
 
 
   @action('setForm') set(values){
-    Object.keys(values).forEach((key)=>{
-      this.fields[key] = values[key]
-    })
+    if(values){
+      if (typeof values === 'function') {
+        values = values()
+      }
+      Object.keys(values).forEach((key)=>{
+        this.fields[key] = values[key]
+      })
+    }
   }
 
 

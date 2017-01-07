@@ -3,14 +3,14 @@ import { validate } from 'validate.js'
 
 /////////////////////////////////////////////////
 // Usage:
-// 
+//
 /////////////////////////////////////////////////
 
 let SerializableModelMixin = (superclass) => class extends superclass {
 
-  deserialize(values){
+  @action('deserialize') deserialize(values){
     _.forIn(values, (value, key)=>{
-      this[key] = castType(value, ProjectModel.propTypes[key])
+      this[key] = castType(value, this.constructor.propTypes[key])
     })
   }
 

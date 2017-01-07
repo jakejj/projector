@@ -10,9 +10,8 @@ export default class ProjectFormModel extends mix(Object).with(FormViewModelMixi
   constructor(app, values={}){
     super(...arguments)
     this.app = app
-
     this.formProps = {
-      saving: false, 
+      saving: false,
       saved: false,
       validationStatuses: {}
     }
