@@ -15,6 +15,7 @@
     "babel-plugin-typecheck": "^2.0.0",
     "bootstrap": "^3.3.6",
     "camelcase": "^2.1.1",
+    "crossover": "0.0.1",
     "decamelize": "^1.2.0",
     "file-loader": "^0.8.5",
     "history": "2.0.1",
