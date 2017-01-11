@@ -1,6 +1,5 @@
 import camelCase from 'camelCase'
 import decamelize from 'decamelize'
-import R from 'Ramda'
 import pluralizeLib from 'pluralize'
 window.p = pluralizeLib
 

@@ -1,7 +1,8 @@
 import { isPromise, inGroupsOf, pluralize } from '../../utils/utils'
 
 
-let GqlStoreMixin = (superclass) => class extends superclass {
+//let GqlStoreMixin = (superclass) => class extends superclass {
+class GqlStoreMixin {
 
   get(...args){
     if(args.length < 3){ throw('At least 3 arguments are required for get: model type, params, fields.') }
