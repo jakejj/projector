@@ -1,11 +1,11 @@
 import mobx, { action, computed, observable } from 'mobx'
-import { mix } from '../../utils/utils'
+import { mix, BaseClass } from '../../utils/utils'
 import StoreMixin from './store-mixin'
 import GqlStoreMixin from './gql-store-mixin'
 //import ProjectModel from './project-model'
 
 
-export default class ProjectStore extends mix(Object).with(StoreMixin, GqlStoreMixin) {
+class ProjectStore extends mix(BaseClass).with(GqlStoreMixin, StoreMixin) {
 
   modelTypeName = 'Project'
   createGql = 'mutation createProject($name: String!){createProject(input: {name: $name}){ project{ id, name } }}'
@@ -19,9 +19,12 @@ export default class ProjectStore extends mix(Object).with(StoreMixin, GqlStoreM
     this.app = app
   }
 
+
   @computed get serialize() {
     let props = {models: this.models}
     return JSON.stringify(props)
   }
 
 }
+
+export default ProjectStore

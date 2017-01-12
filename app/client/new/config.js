@@ -2,7 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 import Axios from 'axios'
 import mobx from 'mobx'
-import mobxstore from 'mobx-store'
+//import mobxstore from 'mobx-store'
 
 //import AppUIStore from './stores/AppUIStore'
 //import UIMessageStore from './stores/UIMessageStore'
@@ -39,7 +39,10 @@ app.gqlStore = new GqlStore(app)
 app.gqlUrl = 'http://localhost:3060/api/gql'
 app.appUIStore = new AppUIStore(app)
 app.uiMessageStore = new UIMessageStore(app)
+
+//app.projectStore = new ProjectStore(app, {api: api})
 app.projectStore = new ProjectStore(app, {api: api})
+
 app.uiFormStore = new UIFormStore(app)
 app.ProjectModel = ProjectModel
 

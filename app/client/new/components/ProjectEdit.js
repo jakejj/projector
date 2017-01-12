@@ -42,14 +42,17 @@ class ProjectEdit extends React.Component {
 
 const ProjectEditForm = observer((props) => {
   if(props.viewModel.saving){ return(<Loading />) }
+  
+  let validationMessage = ()=>{
+    let em = props.viewModel.validationMessagesFor('name')
+    return em ? <div>{em}</div> : null
+  }
+  
   return(
     <form onSubmit={props.handleSubmit}>
       <FormGroup controlId="formProject" validationState={props.viewModel.validationStatusFor('name')}>
         <ControlLabel>Edit Project</ControlLabel>
-        {()=>{
-          let em = props.viewModel.validationMessagesFor('name')
-          return em ? <div>{em}</div> : null
-        }()}
+        {validationMessage()}
         <FormControl
           name='name'
           type="text"

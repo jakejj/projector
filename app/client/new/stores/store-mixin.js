@@ -1,7 +1,14 @@
 import mobx, { action, computed, observable } from 'mobx'
+import { mixin } from '../../utils/utils'
 
 
 let StoreMixin = (superclass) => class extends superclass {
+//let StoreMixin = mixin(class {
+
+//  constructor(){
+//    super()
+//  }
+
 
   @computed get serialize() {
     let { app, ...rest } = this
@@ -25,5 +32,6 @@ let StoreMixin = (superclass) => class extends superclass {
   }
 
 }
+
 
 export default StoreMixin

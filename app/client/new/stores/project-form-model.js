@@ -1,5 +1,5 @@
 import { action, computed, observable, extendObservable, autorun } from 'mobx'
-import { mix } from '../../utils/utils'
+import { mix, BaseClass } from '../../utils/utils'
 
 //import FormValidationMixin from 'crossover'
 
@@ -8,7 +8,7 @@ import FormValidationMixin from './form-validation-mixin'
 import ProjectModel from './project-model'
 
 
-export default class ProjectFormModel extends mix(Object).with(FormViewModelMixin, FormValidationMixin) {
+export default class ProjectFormModel extends mix(BaseClass).with(FormViewModelMixin, FormValidationMixin) {
 
   constructor(app, values={}){
     super(...arguments)

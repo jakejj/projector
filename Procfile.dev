@@ -1,4 +1,4 @@
 # To start in development, use: foreman start -f Procfile.dev
 web: bundle exec rails server thin -p 3060 -e development
-webpack: ./node_modules/.bin/webpack-dev-server --config config/webpack.config.js --port 3061
+webpack: ./node_modules/.bin/webpack-dev-server --config webpack.config.js --port 3061
 # ./node_modules/.bin/webpack -d --watch --config="./config/webpack.config.js
