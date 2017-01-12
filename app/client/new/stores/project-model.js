@@ -1,11 +1,11 @@
 import { action, computed, observable } from 'mobx'
 import _ from 'lodash'
 // import { camelizeObject, decamelizeObject } from '../../utils/utils';
-import { mix } from '../../utils/utils'
+import { mix, BaseClass } from '../../utils/utils'
 import SerializableModelMixin from './serializable-model-mixin'
 
 
-class ProjectModel extends mix(Object).with(SerializableModelMixin) {
+class ProjectModel extends mix(BaseClass).with(SerializableModelMixin) {
   @observable name
   @observable createdAt
   @observable updatedAt

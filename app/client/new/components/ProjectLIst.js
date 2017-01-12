@@ -10,8 +10,6 @@ class ProjectList extends React.Component {
 
   constructor(props) {
     super(props)
-console.log(props.projectStore)
-console.log(props.projectStore.constructor.name)
     let projects = this.props.projectStore.load('Projects', {}, ['id', 'name'])
   }
 
