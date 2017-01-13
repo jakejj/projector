@@ -1,7 +1,7 @@
 import React from 'react'
 import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
-import ProjectFormModel from '../stores/project-form-model'
+import ProjectFormViewModel from '../../stores/project-form-view-model'
 import FormState from '~/app/client/crossover/components/FormState'
 import Loading from '~/app/client/crossover/components/Loading'
 import Loader from '~/app/client/crossover/components/Loader'
@@ -20,7 +20,7 @@ class ProjectEdit extends React.Component {
   }
 
   getViewModel(){
-    return this.props.uiFormStore.use('projectEditForm' + this.props.params.projectId, ProjectFormModel, this.getModel.bind(this))
+    return this.props.uiFormStore.use('projectEditForm' + this.props.params.projectId, ProjectFormViewModel, this.getModel.bind(this))
   }
 
   render(){

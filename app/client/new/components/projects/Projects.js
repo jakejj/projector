@@ -1,7 +1,7 @@
 import React from 'react'
 import { Match, Miss, Link } from 'react-router'
 
-import LayoutSwitcher from './LayoutSwitcher'
+import LayoutSwitcher from '../LayoutSwitcher'
 import ProjectList from './ProjectList'
 import Project from './Project'
 import ProjectNew from './ProjectNew'
