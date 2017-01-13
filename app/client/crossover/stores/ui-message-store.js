@@ -24,7 +24,7 @@ export default class UIMessageStore {
       // Remove the message the next time the URL changes
       let runs = 0
       let disposer = autorun(() => {
-        this.app.uiRouteStore.location
+        this.app.stores.uiRouteStore.location
         if(runs > 0){
           this.clear()
           disposer()

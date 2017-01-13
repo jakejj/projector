@@ -37,9 +37,9 @@ class UIStateViewerStore {
   }
 
   @computed get appState() {
-    return Object.keys(this.app).reduce((acc, key) => {
-      if (this.app[key].serialize) {
-        return {...acc, [key]: JSON.parse(this.app[key].serialize)}
+    return Object.keys(this.app.stores).reduce((acc, key) => {
+      if (this.app.stores[key].serialize) {
+        return {...acc, [key]: JSON.parse(this.app.stores[key].serialize)}
       } else {
         return acc
       }

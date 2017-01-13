@@ -8,7 +8,7 @@ export default class GqlStore {
 
   loadData(app, requests){
     let gql = toGql(requests)
-    let resultPromise = executeGqlQuery(app.api, app.gqlUrl, gql)
+    let resultPromise = executeGqlQuery(app.settings.api, app.settings.gqlUrl, gql)
     return resultPromise.then((results)=>{
       parseGqlQueryResults(app, results.data)
       addQueriesToCache(this.queryCache, requests)
@@ -16,7 +16,7 @@ export default class GqlStore {
   }
 
   deleteData(app, gqlMutation, variables) {
-    let resultPromise = executeGqlQuery(app.api, app.gqlUrl, gqlMutation, variables)
+    let resultPromise = executeGqlQuery(app.settings.api, app.settings.gqlUrl, gqlMutation, variables)
     return resultPromise.then((results)=>{
       if (!results.errors) {
         deleteStoreData(app, variables.type, variables.id)
@@ -27,7 +27,7 @@ export default class GqlStore {
   }
 
   mutateData(app, gqlMutation, variables){
-    return executeGqlMutation(app, app.api, app.gqlUrl, gqlMutation, variables)
+    return executeGqlMutation(app, app.settings.api, app.settings.gqlUrl, gqlMutation, variables)
   }
 
   checkQueryCache(requests){
@@ -55,7 +55,7 @@ function addQueriesToCache(queryCache, requests){
 
 function deleteStoreData(app, type, id) {
   let storeName = singularize(type).toLowerCase() + 'Store'
-  app[storeName]._delete(id)
+  app.stores[storeName]._delete(id)
 }
 
 
@@ -63,16 +63,16 @@ function parseGqlQueryResultsHelper(app, data){
   Object.keys(data).forEach((key)=>{
     let value = data[key]
     let storeName = singularize(key) + 'Store'
-    if (!app[storeName]) {
+    if (!app.stores[storeName]) {
       return parseGqlQueryResultsHelper(app, value)
     }
 
     if(Array.isArray(value)){
       value.forEach((val)=>{
-        app[storeName].add(val)
+        app.stores[storeName].add(val)
       })
     } else {
-      app[storeName].add(value)
+      app.stores[storeName].add(value)
     }
   })
 }

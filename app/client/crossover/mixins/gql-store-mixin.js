@@ -9,7 +9,7 @@ let GqlStoreMixin = (superclass) => class extends superclass {
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
 
-    let cached = this.app.gqlStore.checkQueryCache(requests)
+    let cached = this.app.stores.gqlStore.checkQueryCache(requests)
     if(!cached){ return null }
 
     if(requests.length > 1){
@@ -26,7 +26,7 @@ let GqlStoreMixin = (superclass) => class extends superclass {
     if(args.length % 3 != 0){ options = args.pop() }
     let requests = inGroupsOf(args, 3)
 
-    app.gqlStore.loadData(app, requests)
+    app.stores.gqlStore.loadData(app, requests)
   }
 
 
@@ -39,19 +39,19 @@ let GqlStoreMixin = (superclass) => class extends superclass {
 
   create({name} = {}){
     let gql = this.createGql
-    return app.gqlStore.mutateData(this.app, gql, {name: name})
+    return app.stores.gqlStore.mutateData(this.app, gql, {name: name})
   }
 
 
   update({name, id} = {}){
     let gql = this.updateGql
-    return app.gqlStore.mutateData(this.app, gql, {name: name, id: id})
+    return app.stores.gqlStore.mutateData(this.app, gql, {name: name, id: id})
   }
 
 
   delete({id} = {}){
     let gql = 'mutation delete($id: ID!, $type: String!){delete(input: {id: $id, type: $type}){ type, id }}'
-    return app.gqlStore.deleteData(this.app, gql, {id: id, type: this.modelTypeName})
+    return app.stores.gqlStore.deleteData(this.app, gql, {id: id, type: this.modelTypeName})
   }
 
 

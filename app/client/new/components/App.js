@@ -17,7 +17,7 @@ class App extends React.Component {
   render(){
     return (
       <BrowserRouter>
-        <Provider {...app} >
+        <Provider {...app.stores} >
           <div id="projector-app">
             <Match pattern="/" component={RouteMonitor} />
 

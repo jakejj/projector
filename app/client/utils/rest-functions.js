@@ -119,7 +119,7 @@
 //  let payload = mobx.toJS(model)
 //  payload.app = undefined
 //
-//  return app.api.put(url, payload)
+//  return app.settings.api.put(url, payload)
 //  .then((response) => {
 //    return response
 //  })

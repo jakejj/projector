@@ -32,7 +32,7 @@ export default class ProjectFormModel extends mix(BaseClass).with(FormViewModelM
   save(){
     if(this.isValid()){
       super.save({
-        store: this.app.projectStore,
+        store: this.app.stores.projectStore,
         createSuccessMessage: 'Project Created',
         createErrorMessage: 'Server Error Creating Project',
         updateSuccessMessage: 'Project Updated',

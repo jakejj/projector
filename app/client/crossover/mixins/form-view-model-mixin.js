@@ -69,10 +69,10 @@ let FormViewModelMixin = (superclass) => class extends superclass {
       this.saving = false
       if (status.success) {
         this.saved = true
-        this.app.uiMessageStore.add(successMessage, 'success')
+        this.app.stores.uiMessageStore.add(successMessage, 'success')
         this.reset()
       } else {
-        this.app.uiMessageStore.add(errorMessage, 'error')
+        this.app.stores.uiMessageStore.add(errorMessage, 'error')
       }
       return status
     })

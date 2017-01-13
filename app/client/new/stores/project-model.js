@@ -27,7 +27,7 @@ class ProjectModel extends mix(BaseClass).with(SerializableModelMixin) {
 
   @action('update') update(values){
     this.setValues(this, values)
-    return this.app.ProjectsStore.update(this)
+    return this.app.stores.ProjectsStore.update(this)
   }
 
 }

@@ -20,17 +20,18 @@ const api = Axios.create({
 })
 
 let app = {
-  api: api,
+  stores: {},
+  settings: {}
 }
 
+app.settings.gqlUrl = 'http://localhost:3060/api/gql'
+app.settings.api = api
 
-app.uiRouteStore = new UIRouteStore(app)
-app.gqlStore = new GqlStore(app)
-app.gqlUrl = 'http://localhost:3060/api/gql'
-app.uiMessageStore = new UIMessageStore(app)
-app.projectStore = new ProjectStore(app, {api: api})
-app.uiFormStore = new UIFormStore(app)
-app.ProjectModel = ProjectModel
+app.stores.uiRouteStore = new UIRouteStore()
+app.stores.gqlStore = new GqlStore(app)
+app.stores.uiMessageStore = new UIMessageStore(app)
+app.stores.projectStore = new ProjectStore(app, {api: api})
+app.stores.uiFormStore = new UIFormStore(app)
 
 
 window.app = app
