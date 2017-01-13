@@ -1,13 +1,7 @@
-import { isPromise, inGroupsOf, pluralize } from '../../utils/utils'
-import { mixin } from '../../utils/utils'
+import { inGroupsOf } from '../utils/in-groups-of'
 
 
 let GqlStoreMixin = (superclass) => class extends superclass {
-//let GqlStoreMixin = mixin(class {
-
-//  constructor(){
-//    super()
-//  }
 
   get(...args){
     if(args.length < 3){ throw('At least 3 arguments are required for get: model type, params, fields.') }
@@ -51,7 +45,6 @@ let GqlStoreMixin = (superclass) => class extends superclass {
 
   update({name, id} = {}){
     let gql = this.updateGql
-    console.log("gql", gql);
     return app.gqlStore.mutateData(this.app, gql, {name: name, id: id})
   }
 
@@ -99,7 +92,6 @@ function processGetRequest(collection, request){
   let fields = request[2]
 
   if(params.id){
-    //let found = this[pluralize(modelName)].get(params.id)
     let found = collection.get(params.id)
     return (found && hasAllProperties(found, fields)) ? found : null
   } else {

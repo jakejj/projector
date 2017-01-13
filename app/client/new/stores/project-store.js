@@ -1,7 +1,7 @@
 import mobx, { action, computed, observable } from 'mobx'
 import { mix, BaseClass } from '../../utils/utils'
-import StoreMixin from './store-mixin'
-import GqlStoreMixin from './gql-store-mixin'
+import StoreMixin from '../../crossover/mixins/store-mixin'
+import GqlStoreMixin from '../../crossover/mixins/gql-store-mixin'
 //import ProjectModel from './project-model'
 
 

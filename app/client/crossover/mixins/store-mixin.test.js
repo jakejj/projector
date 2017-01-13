@@ -1,5 +1,6 @@
 import mobx, { action, computed, observable } from 'mobx'
-import { mix, BaseClass } from '../../utils/utils'
+import mix from '../utils/mix'
+import BaseClass from '../utils/base-class'
 import StoreMixin from './store-mixin'
 
 

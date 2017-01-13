@@ -2,8 +2,8 @@ import React from 'react'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router'
 import { observer, inject } from 'mobx-react'
-import Loading from './Loading'
-import Loader from './Loader'
+import Loading from '../../crossover/components/Loading'
+import Loader from '../../crossover/components/Loader'
 
 
 @inject('projectStore') @observer

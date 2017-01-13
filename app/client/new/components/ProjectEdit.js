@@ -3,9 +3,9 @@ import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 're
 import { observer, inject } from 'mobx-react'
 import ProjectNewFormModel from '../stores/project-new-form-model'
 import ProjectFormModel from '../stores/project-form-model'
-import FormState from './FormState'
-import Loading from './Loading'
-import Loader from './Loader'
+import FormState from '../../crossover/components/FormState'
+import Loading from '../../crossover/components/Loading'
+import Loader from '../../crossover/components/Loader'
 import { Redirect } from 'react-router'
 
 

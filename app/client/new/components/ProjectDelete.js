@@ -1,7 +1,7 @@
 import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { observable, action } from 'mobx'
-import Loading from './Loading'
+import Loading from '../../crossover/components/Loading'
 import { Redirect } from 'react-router'
 
 @inject('projectStore') @observer

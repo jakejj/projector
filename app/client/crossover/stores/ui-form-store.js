@@ -1,6 +1,6 @@
 import mobx, { action, computed, observable, extendObservable } from 'mobx'
 import _ from 'lodash'
-import { convertStateToTree } from './ui-stateviewer-store'
+import { convertStateToTree } from '../../crossover/stores/ui-stateviewer-store'
 
 
 export default class UIFormStore {

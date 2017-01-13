@@ -1,8 +1,8 @@
 import React from 'react'
-import Tree from './Tree'
-import UIStateViewerStore from '../stores/ui-stateviewer-store'
 import mobx from 'mobx'
 import { observer } from 'mobx-react'
+import Tree from './Tree'
+import UIStateViewerStore from '../stores/ui-stateviewer-store'
 
 @observer
 class StateViewerBranch extends React.Component {
