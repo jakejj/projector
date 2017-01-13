@@ -54,6 +54,7 @@
     "flow-bin": "^0.37.4",
     "jest": "^18.1.0",
     "mobx-react-devtools": "^4.2.0",
+    "react-test-renderer": "^15.4.2",
     "style-loader": "^0.13.1",
     "url-loader": "^0.5.7",
     "webpack": "^1.14.0",
