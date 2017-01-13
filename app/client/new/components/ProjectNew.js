@@ -2,8 +2,8 @@ import React from 'react'
 import { Grid, Row, Col, Button, FormGroup, ControlLabel, FormControl } from 'react-bootstrap'
 import { observer, inject } from 'mobx-react'
 import ProjectFormModel from '../stores/project-form-model'
-import FormState from '../../crossover/components/FormState'
-import Loading from '../../crossover/components/Loading'
+import FormState from '~/app/client/crossover/components/FormState'
+import Loading from '~/app/client/crossover/components/Loading'
 import { Redirect } from 'react-router'
 
 

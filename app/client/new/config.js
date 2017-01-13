@@ -5,10 +5,10 @@ import mobx from 'mobx'
 
 
 import App from './components/app'
-import GqlStore from '../crossover/stores/gql-store'
-import UIMessageStore from '../crossover/stores/ui-message-store'
-import UIRouteStore from '../crossover/stores/ui-route-store'
-import UIFormStore from '../crossover/stores/ui-form-store'
+import GqlStore from '~/app/client/crossover/stores/gql-store'
+import UIMessageStore from '~/app/client/crossover/stores/ui-message-store'
+import UIRouteStore from '~/app/client/crossover/stores/ui-route-store'
+import UIFormStore from '~/app/client/crossover/stores/ui-form-store'
 import ProjectStore from './stores/project-store'
 import ProjectModel from './stores/project-model'
 

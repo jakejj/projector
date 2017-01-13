@@ -2,7 +2,7 @@ import React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Grid, Row, Col, Button } from 'react-bootstrap'
 import { Link } from 'react-router'
-import Loading from '../../crossover/components/Loading'
+import Loading from '~/app/client/crossover/components/Loading'
 
 
 @inject('projectStore') @observer

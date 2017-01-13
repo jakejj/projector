@@ -1,7 +1,7 @@
 import { action, computed, observable } from 'mobx'
 import _ from 'lodash'
 import { mix, BaseClass } from '../../utils/utils'
-import SerializableModelMixin from '../../crossover/mixins/serializable-model-mixin'
+import SerializableModelMixin from '~/app/client/crossover/mixins/serializable-model-mixin'
 
 
 class ProjectModel extends mix(BaseClass).with(SerializableModelMixin) {

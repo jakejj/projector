@@ -51,6 +51,7 @@
     "babel-preset-latest": "^6.16.0",
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
+    "babel-root-import": "^4.1.5",
     "flow-bin": "^0.37.4",
     "jest": "^18.1.0",
     "mobx-react-devtools": "^4.2.0",

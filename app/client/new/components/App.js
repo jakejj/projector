@@ -7,8 +7,8 @@ import DevTools from 'mobx-react-devtools';
 import app from '../config'
 import Messages from './Messages'
 import Projects from './Projects'
-import RouteMonitor from '../../crossover/components/RouteMonitor'
-import StateViewer from '../../crossover/components/StateViewer'
+import RouteMonitor from '~/app/client/crossover/components/RouteMonitor'
+import StateViewer from '~/app/client/crossover/components/StateViewer'
 
 
 
