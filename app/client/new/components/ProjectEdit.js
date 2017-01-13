@@ -19,7 +19,7 @@ class ProjectEdit extends React.Component {
     return this.props.projectStore.get(...this.query())
   }
 
-  getViewModel(model){
+  getViewModel(){
     return this.props.uiFormStore.use('projectEditForm' + this.props.params.projectId, ProjectFormModel, this.getModel.bind(this))
   }
 

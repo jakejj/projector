@@ -16,7 +16,7 @@ class ProjectNew extends React.Component {
 
   render(){
     return(
-      <FormState viewModel={this.getViewModel()}>
+      <FormState getViewModel={this.getViewModel.bind(this)}>
         <ProjectNewForm />
       </FormState >
     )
