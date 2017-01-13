@@ -6,7 +6,6 @@ import mobx from 'mobx'
 
 import App from './components/app'
 import GqlStore from '../crossover/stores/gql-store'
-import AppUIStore from './stores/app-ui-store'
 import UIMessageStore from '../crossover/stores/ui-message-store'
 import UIRouteStore from '../crossover/stores/ui-route-store'
 import UIFormStore from '../crossover/stores/ui-form-store'
@@ -28,7 +27,6 @@ let app = {
 app.uiRouteStore = new UIRouteStore(app)
 app.gqlStore = new GqlStore(app)
 app.gqlUrl = 'http://localhost:3060/api/gql'
-app.appUIStore = new AppUIStore(app)
 app.uiMessageStore = new UIMessageStore(app)
 app.projectStore = new ProjectStore(app, {api: api})
 app.uiFormStore = new UIFormStore(app)
