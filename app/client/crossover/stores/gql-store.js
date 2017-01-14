@@ -130,7 +130,7 @@ function makeQuery(request){
 
 
 function executeGqlQuery(api, url, gqlQuery, variables={}){
-  return api.post(url, {query: gqlQuery, variables: variables})
+  return api.post(url, {query: gqlQuery, variables: JSON.stringify(variables)})
 }
 
 

@@ -1,8 +1,12 @@
 class Api::GqlController < ApplicationController
   def create
     query_string = params[:query]
-    #query_variables = JSON.parse(params[:variables]) || {}
-    query_variables = params[:variables] || {}
+    query_variables = if params[:variables]
+      JSON.parse(params[:variables])
+    else
+      {}
+    end
+    #query_variables = params[:variables] || {}
     result = ProjectSchema.execute(query_string, variables: query_variables)
     render json: result
   end
